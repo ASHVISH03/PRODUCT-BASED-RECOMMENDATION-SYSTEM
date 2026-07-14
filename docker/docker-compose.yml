@@ -1,0 +1,92 @@
+# ============================================================
+# Docker Compose — Full Stack
+# Services: api + mlflow
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ----------------------------------------------------------
+  # FastAPI Application + Recommendation System
+  # ----------------------------------------------------------
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: prs-api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - LOG_LEVEL=INFO
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - DATABASE_URL=sqlite:////app/data/recommendation.db
+      - KAGGLE_USERNAME=${KAGGLE_USERNAME:-}
+      - KAGGLE_KEY=${KAGGLE_KEY:-}
+      - DATA_RAW_FILEPATH=${DATA_RAW_FILEPATH:-data/raw/amazon.csv}
+    volumes:
+      - prs-data:/app/data
+      - prs-models:/app/models
+      - prs-mlruns:/app/mlruns
+      - prs-logs:/app/logs
+      - prs-artifacts:/app/artifacts
+    depends_on:
+      - mlflow
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/api/v1/health/live', timeout=5).raise_for_status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - prs-network
+
+  # ----------------------------------------------------------
+  # MLflow Tracking Server
+  # ----------------------------------------------------------
+  mlflow:
+    image: python:3.13-slim
+    container_name: prs-mlflow
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install mlflow==2.18.0 --quiet &&
+               mlflow server
+               --host 0.0.0.0
+               --port 5000
+               --backend-store-uri /mlflow/mlruns
+               --default-artifact-root /mlflow/artifacts"
+    ports:
+      - "5000:5000"
+    volumes:
+      - prs-mlruns:/mlflow/mlruns
+      - prs-artifacts:/mlflow/artifacts
+    restart: unless-stopped
+    networks:
+      - prs-network
+
+# ----------------------------------------------------------
+# Named Volumes (persist data across restarts)
+# ----------------------------------------------------------
+volumes:
+  prs-data:
+    name: prs-data
+  prs-models:
+    name: prs-models
+  prs-mlruns:
+    name: prs-mlruns
+  prs-logs:
+    name: prs-logs
+  prs-artifacts:
+    name: prs-artifacts
+
+# ----------------------------------------------------------
+# Network
+# ----------------------------------------------------------
+networks:
+  prs-network:
+    name: prs-network
+    driver: bridge

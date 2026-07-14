@@ -1,0 +1,64 @@
+# ============================================================
+# Product Recommendation System — Requirements
+# Python 3.13.x compatible
+# ============================================================
+
+# --- Core Web Framework ---
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+starlette==0.41.3
+
+# --- Data Science & ML ---
+scikit-learn==1.5.2
+pandas==2.2.3
+numpy==2.1.3
+scipy==1.14.1
+
+# --- Experiment Tracking ---
+mlflow==2.18.0
+
+# --- Database ---
+sqlalchemy==2.0.36
+alembic==1.14.0
+
+# --- Configuration & Validation ---
+pydantic==2.10.3
+pydantic-settings==2.6.1
+python-dotenv==1.2.2
+pyyaml==6.0.2
+
+# --- Search Enhancement ---
+rapidfuzz==3.10.1
+
+# --- Rate Limiting ---
+slowapi==0.1.9
+limits==3.14.0
+
+# --- System Monitoring ---
+psutil==6.1.0
+
+# --- Visualization ---
+matplotlib==3.9.3
+plotly==5.24.1
+
+# --- Kaggle Dataset Download ---
+kaggle==1.6.17
+
+# --- HTTP Client (for testing & internal calls) ---
+httpx==0.28.0
+requests==2.32.3
+
+# --- Testing ---
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-cov==6.0.0
+
+# --- Development Utilities ---
+python-dateutil==2.9.0.post0
+tabulate==0.9.0
+tqdm==4.67.1
+colorama==0.4.6
+
+# --- Type Hints ---
+typing-extensions==4.12.2

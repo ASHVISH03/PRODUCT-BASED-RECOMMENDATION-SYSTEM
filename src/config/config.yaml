@@ -1,0 +1,335 @@
+# ============================================================
+# Product Recommendation System — Master Configuration
+# All paths are relative to the project root.
+# Override any value via environment variables (see .env.example).
+# ============================================================
+
+project:
+  name: "Product Recommendation System"
+  version: "1.0.0"
+  description: "End-to-End MLOps Product Recommendation System"
+  environment: "development"  # development | staging | production
+
+# ---------------------------------------------------------------
+# Data Configuration
+# ---------------------------------------------------------------
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  interim_dir: "data/interim"
+  external_dir: "data/external"
+
+  # Primary dataset: Kaggle Amazon Sales Dataset
+  # Download: python scripts/setup_dataset.py
+  kaggle_dataset: "karkavelrajaj/amazon-sales-dataset"
+  raw_filename: "amazon.csv"
+  raw_filepath: "data/raw/amazon.csv"
+
+  # Fallback dataset: ONLY used when use_fallback is explicitly true
+  # Generate: python scripts/generate_fallback.py
+  fallback_filepath: "data/external/sample_products.csv"
+  use_fallback: false  # Set true ONLY for development without Kaggle credentials
+
+  # Expected schema columns from the Kaggle dataset
+  expected_columns:
+    - "product_id"
+    - "product_name"
+    - "category"
+    - "discounted_price"
+    - "actual_price"
+    - "discount_percentage"
+    - "rating"
+    - "rating_count"
+    - "about_product"
+    - "img_link"
+    - "product_link"
+
+  # Validation thresholds
+  validation:
+    max_missing_ratio: 0.30       # Fail if >30% missing in any column
+    max_duplicate_ratio: 0.10     # Warn if >10% duplicates
+    min_records: 100              # Fail if fewer than 100 records
+    min_price: 0.0
+    max_price: 1000000.0
+    min_rating: 0.0
+    max_rating: 5.0
+    min_rating_count: 0
+
+# ---------------------------------------------------------------
+# Feature Engineering
+# ---------------------------------------------------------------
+features:
+  # Fields combined to create the TF-IDF input text
+  combined_text_fields:
+    - "product_name"
+    - "category"
+    - "about_product"
+
+  # Price buckets: [min, max, label]
+  price_buckets:
+    - [0, 500, "Budget"]
+    - [500, 2000, "Mid-Range"]
+    - [2000, 10000, "Premium"]
+    - [10000, 999999, "Luxury"]
+
+  # Popularity score: rating^rating_weight * log(1+count)^count_weight
+  popularity_formula:
+    rating_weight: 0.7
+    review_count_weight: 0.3
+
+# ---------------------------------------------------------------
+# Model Configuration
+# ---------------------------------------------------------------
+model:
+  artifacts_dir: "models"
+  tfidf_model_path: "models/tfidf.pkl"
+  similarity_matrix_path: "models/similarity.pkl"
+  product_index_path: "models/product_index.pkl"
+  metadata_path: "models/metadata.json"
+
+  tfidf:
+    max_features: 5000
+    ngram_range: [1, 2]
+    min_df: 2
+    max_df: 0.95
+    stop_words: "english"
+    sublinear_tf: true
+    analyzer: "word"
+
+# ---------------------------------------------------------------
+# Recommendation Engines
+# ---------------------------------------------------------------
+recommendation:
+  # Active strategy: content_based | popularity | brand_similarity |
+  #                  category_similarity | price_similarity | hybrid
+  active_strategy: "hybrid"
+
+  # Global N limits
+  default_n: 10
+  max_n: 50
+  min_n: 1
+
+  # Per-section defaults
+  similar_products_n: 8
+  fbt_n: 4
+  trending_n: 12
+  recently_viewed_n: 6
+  homepage_sections_n: 10
+  top_rated_n: 10
+  new_arrivals_n: 10
+  deals_n: 10
+  best_sellers_n: 10
+  customers_also_bought_n: 8
+  because_you_viewed_n: 8
+  recommended_for_you_n: 12
+
+  # Hybrid engine weights (must sum to 1.0)
+  hybrid_weights:
+    content_based: 0.35
+    category_similarity: 0.25
+    brand_similarity: 0.15
+    price_similarity: 0.10
+    popularity: 0.10
+    rating: 0.05
+
+  # Confidence score weights (must sum to 1.0)
+  confidence_weights:
+    text_similarity: 0.35
+    category_similarity: 0.25
+    brand_similarity: 0.15
+    price_similarity: 0.10
+    popularity_contribution: 0.10
+    rating_score: 0.05
+
+  # Confidence grade thresholds
+  confidence_thresholds:
+    excellent: 0.90
+    very_good: 0.75
+    good: 0.60
+    fair: 0.45
+
+  # Reason tag activation thresholds
+  reason_tag_thresholds:
+    same_brand: 1.0
+    similar_category: 0.8
+    similar_specifications: 0.7
+    frequently_purchased_together: 3   # minimum co-occurrence count
+    highly_rated: 0.85
+    popular_choice: 0.8
+    great_price_match: 0.9
+
+  # Trending engine
+  trending:
+    window_hours: 24
+    min_rating_count: 5
+    decay_factor: 0.95
+
+  # Deals filter
+  deals:
+    min_discount_percentage: 20.0
+
+  # New arrivals
+  new_arrivals:
+    days_threshold: 30
+
+  # FBT co-occurrence
+  fbt:
+    min_co_occurrence: 2
+
+# ---------------------------------------------------------------
+# Model Evaluation
+# ---------------------------------------------------------------
+evaluation:
+  k_values: [5, 10]
+  min_precision_at_5: 0.50      # Minimum acceptable Precision@5
+  diversity_sample_size: 100    # Products to sample for diversity calc
+  novelty_sample_size: 100
+
+# ---------------------------------------------------------------
+# API Configuration
+# ---------------------------------------------------------------
+api:
+  host: "0.0.0.0"
+  port: 8000
+  title: "Product Recommendation System API"
+  description: >-
+    MLOps-grade Product Recommendation System REST API.
+    Powered by 7 recommendation engines with explainability,
+    session personalization, and full MLflow integration.
+  version: "1.0.0"
+  docs_url: "/docs"
+  redoc_url: "/redoc"
+
+  cors:
+    allow_origins: ["*"]
+    allow_credentials: false
+    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_headers: ["*"]
+
+  rate_limits:
+    default: "100/minute"
+    search: "60/minute"
+    training: "5/hour"
+    explain: "30/minute"
+    analytics: "100/minute"
+
+# ---------------------------------------------------------------
+# MLflow Configuration
+# ---------------------------------------------------------------
+mlflow:
+  tracking_uri: "mlruns"
+  experiment_name: "product-recommendation"
+  model_name: "recommendation-model"
+  artifacts_dir: "artifacts"
+
+  stages:
+    staging: "Staging"
+    production: "Production"
+    archived: "Archived"
+
+  # Auto-promote if new model beats current production by this margin
+  auto_promote_threshold: 0.02  # 2% improvement in Precision@5
+
+# ---------------------------------------------------------------
+# Database
+# ---------------------------------------------------------------
+database:
+  url: "sqlite:///data/recommendation.db"
+  echo: false
+  pool_pre_ping: true
+  connect_args:
+    check_same_thread: false
+
+# ---------------------------------------------------------------
+# Logging (7 Domain Loggers)
+# ---------------------------------------------------------------
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(name)-20s | %(levelname)-8s | %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  logs_dir: "logs"
+  max_bytes: 10485760   # 10 MB per file
+  backup_count: 5
+
+  files:
+    api: "logs/api.log"
+    training: "logs/training.log"
+    prediction: "logs/prediction.log"
+    experiment: "logs/experiment.log"
+    deployment: "logs/deployment.log"
+    database: "logs/database.log"
+    security: "logs/security.log"
+
+# ---------------------------------------------------------------
+# Cache (In-memory LRU + TTL)
+# ---------------------------------------------------------------
+cache:
+  enabled: true
+  max_size: 1000         # Maximum number of cached entries
+  default_ttl: 3600      # Default TTL in seconds
+
+  # Per-cache-key TTLs (seconds)
+  ttls:
+    similar: 3600        # 1 hour
+    trending: 900        # 15 minutes
+    fbt: 14400           # 4 hours
+    products_list: 1800  # 30 minutes
+    top_rated: 3600      # 1 hour
+    new_arrivals: 1800   # 30 minutes
+    deals: 900           # 15 minutes
+    best_sellers: 3600   # 1 hour
+    search: 300          # 5 minutes
+    categories: 7200     # 2 hours
+
+# ---------------------------------------------------------------
+# Session (Anonymous Personalization)
+# ---------------------------------------------------------------
+session:
+  expiry_days: 30
+  recently_viewed_limit: 50
+  recently_searched_limit: 20
+  cleanup_interval_hours: 24
+  session_id_header: "X-Session-ID"
+
+# ---------------------------------------------------------------
+# Search
+# ---------------------------------------------------------------
+search:
+  typo_correction:
+    enabled: true
+    min_score: 75           # rapidfuzz score cutoff (0-100)
+    max_suggestions: 3
+  autocomplete:
+    limit: 10
+    min_chars: 2
+  min_query_length: 2
+  max_query_length: 200
+  results_per_page: 20
+
+# ---------------------------------------------------------------
+# Monitoring
+# ---------------------------------------------------------------
+monitoring:
+  enabled: true
+  drift_threshold: 0.15      # Alert if drift score exceeds this
+  latency_warning_ms: 500
+  latency_critical_ms: 2000
+  max_latency_history: 1000  # Keep last N latency measurements
+  system_check_interval: 60  # seconds
+
+# ---------------------------------------------------------------
+# Analytics
+# ---------------------------------------------------------------
+analytics:
+  enabled: true
+  ctr_window_hours: 24
+  conversion_window_minutes: 30  # Time window to attribute conversion
+  min_impressions_for_ctr: 10    # Minimum impressions to compute CTR
+
+# ---------------------------------------------------------------
+# Background Jobs
+# ---------------------------------------------------------------
+background:
+  max_workers: 2             # ThreadPoolExecutor max workers
+  training_timeout: 3600     # Max training job duration (seconds)
+  job_cleanup_hours: 72      # Remove job records older than this

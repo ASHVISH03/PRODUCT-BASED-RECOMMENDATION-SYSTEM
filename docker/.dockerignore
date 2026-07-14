@@ -1,0 +1,46 @@
+# Docker build context exclusions
+# Reduces build context size for faster builds
+
+# Virtual environments
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Development data (mounted as volumes in compose)
+data/raw/
+data/processed/
+data/interim/
+mlruns/
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+docs/
+notebooks/
+reports/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+kaggle.json
