@@ -164,8 +164,8 @@ class ModelTrainingArtifact:
     training_duration_seconds: float
     vocabulary_size: int
     matrix_shape: tuple
-    mlflow_run_id: str
-    mlflow_experiment_id: str
+    mlflow_run_id: Optional[str]
+    mlflow_experiment_id: Optional[str]
     dataset_version: str
 
 

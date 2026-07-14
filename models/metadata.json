@@ -1,0 +1,342 @@
+{
+  "model_version": "1.0.0",
+  "training_date": "2026-07-14T13:37:38Z",
+  "dataset_hash": "8eeeeec7c6f3",
+  "dataset_rows": 1351,
+  "dataset_columns": 33,
+  "vocabulary_size": 5000,
+  "matrix_shape": [
+    1351,
+    1351
+  ],
+  "matrix_dtype": "float32",
+  "matrix_size_mb": 6.96,
+  "training_time": 0.83,
+  "training_duration_seconds": 0.83,
+  "similarity_threshold": 0.25,
+  "vectorizer_parameters": {
+    "ngram": [
+      1,
+      2
+    ],
+    "max_features": 5000,
+    "min_df": 2,
+    "max_df": 0.95,
+    "stop_words": "english",
+    "sublinear_tf": true,
+    "analyzer": "word"
+  },
+  "mlflow_run": null,
+  "top_tfidf_terms": [
+    {
+      "term": "accessories",
+      "importance": 0.026566,
+      "idf": 1.521
+    },
+    {
+      "term": "kitchen",
+      "importance": 0.024973,
+      "idf": 2.0868
+    },
+    {
+      "term": "usb",
+      "importance": 0.024607,
+      "idf": 2.1859
+    },
+    {
+      "term": "cable",
+      "importance": 0.020862,
+      "idf": 2.519
+    },
+    {
+      "term": "home",
+      "importance": 0.019516,
+      "idf": 1.9012
+    },
+    {
+      "term": "warranty",
+      "importance": 0.019271,
+      "idf": 2.019
+    },
+    {
+      "term": "type",
+      "importance": 0.017309,
+      "idf": 2.5156
+    },
+    {
+      "term": "power",
+      "importance": 0.016805,
+      "idf": 2.2639
+    },
+    {
+      "term": "easy",
+      "importance": 0.016746,
+      "idf": 2.1643
+    },
+    {
+      "term": "black",
+      "importance": 0.016643,
+      "idf": 1.9868
+    },
+    {
+      "term": "charging",
+      "importance": 0.016488,
+      "idf": 2.6258
+    },
+    {
+      "term": "home kitchen",
+      "importance": 0.016358,
+      "idf": 2.1023
+    },
+    {
+      "term": "high",
+      "importance": 0.016134,
+      "idf": 2.1763
+    },
+    {
+      "term": "cables",
+      "importance": 0.015631,
+      "idf": 2.8112
+    },
+    {
+      "term": "compatible",
+      "importance": 0.015504,
+      "idf": 2.3775
+    },
+    {
+      "term": "use",
+      "importance": 0.015244,
+      "idf": 2.3429
+    },
+    {
+      "term": "design",
+      "importance": 0.0152,
+      "idf": 2.2279
+    },
+    {
+      "term": "tv",
+      "importance": 0.014851,
+      "idf": 3.0677
+    },
+    {
+      "term": "electronics",
+      "importance": 0.014656,
+      "idf": 2.0088
+    },
+    {
+      "term": "computers",
+      "importance": 0.014176,
+      "idf": 2.233
+    },
+    {
+      "term": "water",
+      "importance": 0.014039,
+      "idf": 2.9676
+    },
+    {
+      "term": "fast",
+      "importance": 0.014026,
+      "idf": 2.6372
+    },
+    {
+      "term": "10",
+      "importance": 0.013898,
+      "idf": 2.5122
+    },
+    {
+      "term": "devices",
+      "importance": 0.013587,
+      "idf": 2.4663
+    },
+    {
+      "term": "computers accessories",
+      "importance": 0.013455,
+      "idf": 2.2798
+    },
+    {
+      "term": "battery",
+      "importance": 0.013397,
+      "idf": 2.7756
+    },
+    {
+      "term": "speed",
+      "importance": 0.013332,
+      "idf": 2.5962
+    },
+    {
+      "term": "heating",
+      "importance": 0.013278,
+      "idf": 3.1034
+    },
+    {
+      "term": "product",
+      "importance": 0.01301,
+      "idf": 2.6221
+    },
+    {
+      "term": "kitchen kitchen",
+      "importance": 0.012691,
+      "idf": 2.4728
+    }
+  ],
+  "idf_sample": [
+    4.571754096876523,
+    5.6443908991413725,
+    2.512246770097505,
+    5.6443908991413725,
+    6.01211567926669,
+    6.599902344168809,
+    5.724433606814909,
+    4.317519958492283,
+    6.1298987149230735,
+    5.264901277436469,
+    6.01211567926669,
+    5.6443908991413725,
+    6.01211567926669,
+    5.906755163608864,
+    3.3730583496514313,
+    6.01211567926669,
+    6.01211567926669,
+    6.01211567926669,
+    5.436751534363128,
+    4.220356210038635,
+    6.1298987149230735,
+    5.436751534363128,
+    5.3761269125466935,
+    4.743604353803183,
+    5.811444983804539,
+    5.570282926987651,
+    6.417580787374854,
+    5.264901277436469,
+    6.263430107547596,
+    5.436751534363128,
+    5.501290055500699,
+    5.264901277436469,
+    5.213607983048918,
+    6.01211567926669,
+    5.811444983804539,
+    5.724433606814909,
+    5.436751534363128,
+    6.01211567926669,
+    5.164817818879486,
+    3.4135497110061683,
+    5.811444983804539,
+    5.724433606814909,
+    5.570282926987651,
+    6.1298987149230735,
+    5.164817818879486,
+    3.165915139683663,
+    5.501290055500699,
+    5.724433606814909,
+    5.501290055500699,
+    5.811444983804539
+  ],
+  "vocabulary_sample": {
+    "wayona": 4845,
+    "nylon": 3133,
+    "braided": 856,
+    "usb": 4611,
+    "lightning": 2670,
+    "fast": 1840,
+    "charging": 1068,
+    "data": 1396,
+    "sync": 4359,
+    "cable": 907,
+    "compatible": 1201,
+    "iphone": 2453,
+    "13": 68,
+    "12": 45,
+    "11": 39,
+    "ipad": 2447,
+    "air": 532,
+    "pro": 3485,
+    "mini": 2927,
+    "ft": 1964,
+    "pack": 3222,
+    "grey": 2077,
+    "computers": 1231,
+    "accessories": 459,
+    "peripherals": 3300,
+    "cables": 937,
+    "usbcables": 4647,
+    "high": 2202,
+    "compatibility": 1197,
+    "xr": 4965,
+    "plus": 3386,
+    "6s": 373,
+    "5s": 328,
+    "5c": 309,
+    "se": 3904,
+    "ipod": 2466,
+    "touch": 4466,
+    "apple": 607,
+    "devices": 1479,
+    "charge": 1046,
+    "simultaneously": 4013,
+    "rapid": 3621,
+    "speed": 4141,
+    "adaptor": 498,
+    "multi": 3020,
+    "port": 3403,
+    "station": 4208,
+    "power": 3428,
+    "bank": 710,
+    "durability": 1607,
+    "durable": 1611,
+    "design": 1449,
+    "premium": 3460,
+    "aluminum": 557,
+    "housing": 2274,
+    "toughened": 4475,
+    "fiber": 1872,
+    "wound": 4940,
+    "tightly": 4442,
+    "cord": 1309,
+    "lending": 2640,
+    "superior": 4314,
+    "adding": 503,
+    "bit": 779,
+    "flexibility": 1900,
+    "security": 3918,
+    "level": 2650,
+    "designed": 1462,
+    "fully": 1965,
+    "protect": 3526,
+    "device": 1474,
+    "damaging": 1390,
+    "excessive": 1776,
+    "current": 1358,
+    "copper": 1305,
+    "core": 1318,
+    "multilayer": 3032,
+    "shielding": 3978,
+    "anti": 596,
+    "interference": 2423,
+    "protective": 3532,
+    "circuit": 1114,
+    "equipment": 1757,
+    "warranty": 4781,
+    "months": 2985,
+    "friendly": 1953,
+    "customer": 1369,
+    "services": 3952,
+    "ensures": 1747,
+    "long": 2714,
+    "time": 4445,
+    "enjoyment": 1740,
+    "purchase": 3560,
+    "meet": 2863,
+    "question": 3598,
+    "problem": 3495,
+    "don": 1559,
+    "hesitate": 2200,
+    "contact": 1270,
+    "wayona nylon": 4846
+  },
+  "artifact_paths": {
+    "vectorizer": "models/tfidf.pkl",
+    "similarity_matrix": "models/similarity.pkl",
+    "product_index": "models/product_index.pkl",
+    "processed_products": "models\\processed_products.csv"
+  }
+}
