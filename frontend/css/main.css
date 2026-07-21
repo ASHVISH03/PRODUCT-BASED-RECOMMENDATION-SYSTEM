@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Premium UI Foundation & Theme Variables (Linear/Vercel Inspired)
+   ========================================================================== */
+
+:root {
+    /* Base Colors - Light Theme */
+    --bg-base: #fafafa;
+    --bg-surface: #ffffff;
+    --bg-elevated: #ffffff;
+    
+    --text-primary: #11181c;
+    --text-secondary: #687076;
+    --text-tertiary: #889096;
+    
+    --border-subtle: #eaeaea;
+    --border-strong: #dfe3e6;
+    
+    --brand-primary: #000000;
+    --brand-primary-hover: #1a1a1a;
+    --brand-secondary: #0070f3;
+    
+    --accent-gradient: linear-gradient(135deg, #FF0080 0%, #7928CA 100%);
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: 'Outfit', var(--font-sans);
+    
+    /* Radii */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    
+    /* Z-Index */
+    --z-nav: 1000;
+    --z-dropdown: 1050;
+    --z-modal: 1100;
+}
+
+[data-theme="dark"] {
+    --bg-base: #0a0a0a;
+    --bg-surface: #111111;
+    --bg-elevated: #1a1a1a;
+    
+    --text-primary: #ededed;
+    --text-secondary: #a1a1a1;
+    --text-tertiary: #737373;
+    
+    --border-subtle: #222222;
+    --border-strong: #333333;
+    
+    --brand-primary: #ffffff;
+    --brand-primary-hover: #e5e5e5;
+    --brand-secondary: #3291ff;
+    
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+/* ==========================================================================
+   CSS Reset & Base
+   ========================================================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+    transition: background-color var(--duration-normal) var(--ease-out),
+                color var(--duration-normal) var(--ease-out);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+img, picture, svg {
+    display: block;
+    max-width: 100%;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+/* ==========================================================================
+   Layout & Utilities
+   ========================================================================== */
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .glass {
+    background: rgba(17, 17, 17, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gradient-text {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==========================================================================
+   Animations & Polish
+   ========================================================================== */
+
+.fade-in { opacity: 0; transition: opacity 0.8s var(--ease-out); }
+.fade-in.visible { opacity: 1; }
+
+.fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s var(--ease-out); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+.scale-in { opacity: 0; transform: scale(0.95); transition: all 0.8s var(--ease-out); }
+.scale-in.visible { opacity: 1; transform: scale(1); }
+
+/* Accessibility Focus Ring */
+:focus-visible {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+    border-radius: 2px;
+}

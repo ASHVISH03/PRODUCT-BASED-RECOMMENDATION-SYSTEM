@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazclone | Secure Checkout</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body style="background: var(--bg-base); display: flex; flex-direction: column; min-height: 100vh;">
+    
+    <header style="background: var(--bg-surface); border-bottom: 1px solid var(--border-subtle); padding: 1.5rem 0; text-align: center;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="nav-brand" style="margin: 0;">
+                <i class="ph-fill ph-shopping-bag" style="font-size: 1.5rem; color: var(--brand-secondary)"></i>
+                <a href="index.html">amaz<span class="gradient-text">clone</span></a>
+            </div>
+            <div style="font-weight: 600; font-size: 1.2rem; color: var(--text-primary);">
+                <i class="ph-fill ph-lock-key" style="color: #10B981;"></i> Secure Checkout
+            </div>
+            <div></div>
+        </div>
+    </header>
+
+    <main class="container" style="flex: 1; padding: 3rem 0; display: grid; grid-template-columns: 1fr 400px; gap: 3rem; align-items: start;">
+        
+        <!-- Left: Forms -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            
+            <section style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2rem;">
+                <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="background: var(--brand-primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem;">1</span>
+                    Shipping Address
+                </h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <input type="text" placeholder="First Name" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg-base); color: var(--text-primary); width: 100%;">
+                    <input type="text" placeholder="Last Name" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg-base); color: var(--text-primary); width: 100%;">
+                    <input type="text" placeholder="Street Address" style="grid-column: span 2; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg-base); color: var(--text-primary); width: 100%;">
+                    <input type="text" placeholder="City" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg-base); color: var(--text-primary); width: 100%;">
+                    <input type="text" placeholder="Postal Code" style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--bg-base); color: var(--text-primary); width: 100%;">
+                </div>
+            </section>
+
+            <section style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2rem;">
+                <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem; opacity: 0.5;">
+                    <span style="background: var(--border-strong); color: var(--text-secondary); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem;">2</span>
+                    Payment Method
+                </h2>
+                <div style="background: var(--bg-base); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 2rem; text-align: center; color: var(--text-tertiary);">
+                    <i class="ph-duotone ph-credit-card" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>Payment processing will be integrated in Milestone 8.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2rem; position: sticky; top: 2rem;">
+            <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Order Summary</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle);" id="checkout-items">
+                <p style="color: var(--text-secondary);">Loading your items...</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Items Total:</span>
+                    <span style="font-weight: 600; color: var(--text-primary);" id="checkout-subtotal">₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Estimated GST (Inclusive):</span>
+                    <span style="font-weight: 600; color: var(--text-primary);" id="checkout-tax">Included</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Delivery:</span>
+                    <span style="font-weight: 600; color: #10B981;">FREE</span>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-strong);">
+                <span style="font-size: 1.2rem; font-weight: 600; color: var(--text-primary);">Order Total:</span>
+                <span style="font-size: 1.8rem; font-weight: 700; color: var(--brand-secondary);" id="checkout-total">₹0</span>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="alert('Payment processing is scheduled for Milestone 8.')">
+                <i class="ph ph-lock-key"></i> Proceed to Payment
+            </button>
+            <p style="text-align: center; font-size: 0.85rem; color: var(--text-tertiary); margin-top: 1rem;">
+                By placing your order, you agree to Amazclone's privacy notice and conditions of use.
+            </p>
+        </div>
+
+    </main>
+
+    <footer style="margin-top: auto; border-top: 1px solid var(--border-subtle); padding: 2rem 0; background: var(--bg-surface);">
+        <div class="container" style="text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+            &copy; 2026 Amazclone Platform.
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemsContainer = document.getElementById('checkout-items');
+            if (window.cart && window.cart.length > 0) {
+                const loadCheckout = async () => {
+                    let itemsHTML = '';
+                    let subtotal = 0;
+                    
+                    window.globalProductCache = window.globalProductCache || {};
+
+                    for (const pid of window.cart) {
+                        let product = window.globalProductCache[pid];
+                        
+                        // Fetch missing product details
+                        if (!product && window.api) {
+                            const res = await window.api.getProduct(pid);
+                            if (!res.error && res.data) {
+                                product = res.data;
+                                window.globalProductCache[pid] = product;
+                            }
+                        }
+                        
+                        if (product) {
+                            const priceNum = parseFloat(String(product.discounted_price || product.actual_price || 999).replace(/[^0-9.]/g, ''));
+                            subtotal += priceNum;
+                            
+                            itemsHTML += `
+                                <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <div style="width: 50px; height: 50px; background: var(--bg-base); border-radius: var(--radius-sm); border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--brand-secondary);">
+                                            <i class="ph-duotone ph-package"></i>
+                                        </div>
+                                        <div style="flex: 1; min-width: 0;">
+                                            <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; max-width: 200px;">${product.product_name}</div>
+                                            <div style="color: var(--brand-secondary); font-weight: 700;">₹${priceNum.toLocaleString()}</div>
+                                        </div>
+                                    </div>
+                                    <div style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; text-align: right;">
+                                        Qty: 1
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            itemsHTML += `<div>Product ${pid}</div>`;
+                        }
+                    }
+                    
+                    itemsContainer.innerHTML = itemsHTML;
+                    
+                    document.getElementById('checkout-subtotal').innerText = '₹' + subtotal.toLocaleString();
+                    document.getElementById('checkout-tax').innerText = 'Included';
+                    document.getElementById('checkout-total').innerText = '₹' + subtotal.toLocaleString();
+                };
+                
+                loadCheckout();
+                
+            } else {
+                itemsContainer.innerHTML = '<p style="color: var(--brand-secondary);">Your cart is empty.</p><a href="index.html" class="btn btn-outline" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a>';
+                document.getElementById('checkout-subtotal').innerText = '₹0';
+                document.getElementById('checkout-tax').innerText = 'Included';
+                document.getElementById('checkout-total').innerText = '₹0';
+            }
+        });
+    </script>
+</body>
+</html>

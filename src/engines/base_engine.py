@@ -8,10 +8,13 @@ that all 7 engines implement.
 
 from __future__ import annotations
 
+import math
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
+import numpy as np
 import pandas as pd
 
 
@@ -149,30 +152,58 @@ class RecommendationResult:
     product_link: str = ""
 
 
+def _safe_str(val, default: str = "") -> str:
+    if val is None or pd.isna(val):
+        return default
+    s = str(val).strip()
+    return default if s.lower() in ("nan", "none", "null") else s
+
+
+def _safe_float(val, default: float = 0.0) -> float:
+    if val is None or pd.isna(val):
+        return float(default)
+    if isinstance(val, (int, float, np.integer, np.floating)):
+        f = float(val)
+        return float(default) if math.isnan(f) or math.isinf(f) else f
+    try:
+        s = str(val).strip()
+        if not s or s.lower() in ("nan", "none", "null"):
+            return float(default)
+        clean_s = re.sub(r"[^\d.-]", "", s)
+        if not clean_s or clean_s in ("-", "."):
+            return float(default)
+        res = float(clean_s)
+        return float(default) if math.isnan(res) or math.isinf(res) else res
+    except (ValueError, TypeError):
+        return float(default)
+
+
+def _safe_int(val, default: int = 0) -> int:
+    f_val = _safe_float(val, default=float(default))
+    try:
+        return int(f_val)
+    except (ValueError, TypeError, OverflowError):
+        return int(default)
+
+
 def _enrich_result(result: RecommendationResult, row: pd.Series) -> RecommendationResult:
     """
     Populate enrichment fields on a RecommendationResult from a DataFrame row.
-
-    Args:
-        result: RecommendationResult with core fields set.
-        row: DataFrame row for the recommended product.
-
-    Returns:
-        RecommendationResult with all metadata populated.
+    Handles missing/NaN values safely.
     """
-    result.category = str(row.get("category", ""))
-    result.category_l1 = str(row.get("category_l1", ""))
-    result.category_l2 = str(row.get("category_l2", ""))
-    result.brand = str(row.get("brand", ""))
-    result.price = float(row.get("discounted_price", 0.0) or 0.0)
-    result.actual_price = float(row.get("actual_price", 0.0) or 0.0)
-    result.discount_percentage = float(row.get("discount_percentage", 0.0) or 0.0)
-    result.rating = float(row.get("rating", 0.0) or 0.0)
-    result.rating_count = int(row.get("rating_count", 0) or 0)
-    result.popularity_score = float(row.get("popularity_score", 0.0) or 0.0)
-    result.price_bucket = str(row.get("price_bucket", ""))
-    result.img_link = str(row.get("img_link", ""))
-    result.product_link = str(row.get("product_link", ""))
+    result.category = _safe_str(row.get("category"))
+    result.category_l1 = _safe_str(row.get("category_l1"))
+    result.category_l2 = _safe_str(row.get("category_l2"))
+    result.brand = _safe_str(row.get("brand"))
+    result.price = _safe_float(row.get("discounted_price"))
+    result.actual_price = _safe_float(row.get("actual_price"))
+    result.discount_percentage = _safe_float(row.get("discount_percentage"))
+    result.rating = _safe_float(row.get("rating"))
+    result.rating_count = _safe_int(row.get("rating_count"))
+    result.popularity_score = _safe_float(row.get("popularity_score"))
+    result.price_bucket = _safe_str(row.get("price_bucket"))
+    result.img_link = _safe_str(row.get("img_link"))
+    result.product_link = _safe_str(row.get("product_link"))
     return result
 
 

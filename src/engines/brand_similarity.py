@@ -35,9 +35,13 @@ class BrandSimilarityEngine(BaseEngine):
 
     def _build_reason(self, brand: str, row: pd.Series) -> tuple:
         """Build reason string and tags for a brand match."""
+        import math
         tags: List[str] = ["Same Brand"]
-        rating = float(row.get("rating", 0) or 0)
-        rating_count = int(row.get("rating_count", 0) or 0)
+        r_val = row.get("rating")
+        rating = float(r_val) if pd.notna(r_val) else 0.0
+        
+        rc_val = row.get("rating_count")
+        rating_count = int(float(rc_val)) if pd.notna(rc_val) and not math.isnan(float(rc_val)) else 0
 
         reason_parts = [f"Also from {brand}"]
         if rating >= 4.0:

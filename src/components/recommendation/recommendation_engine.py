@@ -24,7 +24,9 @@ return the cached singleton.
 
 from __future__ import annotations
 
+import math
 import pickle
+import re
 import sys
 import time
 from pathlib import Path
@@ -44,6 +46,7 @@ from src.engines.category_similarity import CategorySimilarityEngine
 from src.engines.content_based import ContentBasedEngine
 from src.engines.frequently_bought import FrequentlyBoughtTogetherEngine
 from src.engines.hybrid import HybridEngine
+from src.engines.personalized import PersonalizedEngine
 from src.engines.popularity import PopularityEngine
 from src.engines.price_similarity import PriceSimilarityEngine
 from src.engines.trending import TrendingEngine
@@ -73,6 +76,7 @@ class RecommendationEngine:
         idx_to_id: Dict[int, str],
         model_version: str,
         vocab_size: int,
+        tfidf_vectorizer=None,
     ) -> None:
         self._df = products_df
         self._sim_matrix = similarity_matrix
@@ -80,6 +84,7 @@ class RecommendationEngine:
         self._idx_to_id = idx_to_id
         self.model_version = model_version
         self.vocab_size = vocab_size
+        self._tfidf_vectorizer = tfidf_vectorizer
 
         # Initialise all engines
         logger.info("Initialising recommendation engines...")
@@ -100,6 +105,19 @@ class RecommendationEngine:
                 product_index=product_index,
             ),
         }
+
+        # Personalized engine (requires vectorizer for user profile construction)
+        if tfidf_vectorizer is not None:
+            self._personalized_engine = PersonalizedEngine(
+                products_df=products_df,
+                vectorizer=tfidf_vectorizer,
+                similarity_matrix=similarity_matrix,
+                product_index=product_index,
+            )
+            logger.info("PersonalizedEngine: initialized.")
+        else:
+            self._personalized_engine = None
+            logger.warning("PersonalizedEngine: no vectorizer supplied — personalization disabled.")
 
         # Build text search index
         self._name_to_ids: Dict[str, List[str]] = {}
@@ -154,6 +172,10 @@ class RecommendationEngine:
                     f"Run training first: python -m src.pipelines.training_pipeline"
                 )
 
+        # Load the TF-IDF vectorizer (needed for PersonalizedEngine profile construction)
+        with open(required_files["vectorizer"], "rb") as f:
+            tfidf_vectorizer = pickle.load(f)
+
         logger.info(f"Loading model artifacts from: {models_path}")
         t0 = time.perf_counter()
 
@@ -193,6 +215,7 @@ class RecommendationEngine:
             idx_to_id=idx_to_id,
             model_version=model_version,
             vocab_size=vocab_size,
+            tfidf_vectorizer=tfidf_vectorizer,
         )
         return _engine_instance
 
@@ -268,19 +291,30 @@ class RecommendationEngine:
                         query_text, candidate_text, max_keywords=5
                     )
 
+            def _clean_confidence(val, default=0.0) -> float:
+                try:
+                    f = float(val)
+                    if math.isnan(f) or math.isinf(f):
+                        return float(default)
+                    return float(round(f, 3))
+                except (ValueError, TypeError):
+                    return float(default)
+
+            conf_val = _clean_confidence(result.confidence_score)
+
             # 3. Structured reason_dict
             result.reason_dict = {
-                "product": result.product_name,
-                "score": round(result.confidence_score, 3),
+                "product": str(result.product_name),
+                "score": conf_val,
                 "reason": {
-                    "category": result.category_l1 or result.category_l2 or "N/A",
-                    "brand": result.brand if result.brand not in ("Unknown", "", "nan") else "N/A",
+                    "category": str(result.category_l1 or result.category_l2 or "N/A"),
+                    "brand": str(result.brand if result.brand not in ("Unknown", "", "nan") else "N/A"),
                     "matched_keywords": result.matched_keywords,
-                    "engine": result.strategy.replace("_", " ").title(),
-                    "confidence": result.confidence_grade,
-                    "confidence_score": round(result.confidence_score, 3),
+                    "engine": str(result.strategy.replace("_", " ").title()),
+                    "confidence": str(result.confidence_grade),
+                    "confidence_score": conf_val,
                     "reason_tags": result.reason_tags,
-                    "primary_reason": result.recommendation_reason,
+                    "primary_reason": str(result.recommendation_reason),
                 },
             }
 
@@ -438,6 +472,73 @@ class RecommendationEngine:
             seen_ids.add(pid)
 
         return self._enrich_explanations(results)
+
+    def recommend_personalized(
+        self,
+        history_ids: List[str],
+        interaction_types: Optional[Dict[str, str]] = None,
+        top_k: int = 8,
+        candidate_pool: int = 50,
+    ) -> List[RecommendationResult]:
+        """
+        Generate personalized recommendations from a user's session history.
+
+        Uses the PersonalizedEngine to:
+            1. Build a recency-weighted TF-IDF user profile vector.
+            2. Score all catalog products via cosine similarity.
+            3. Exclude already-viewed products.
+            4. MMR-rerank for relevance-diversity balance.
+
+        Cold-start behavior: if history_ids is empty or PersonalizedEngine is
+        unavailable, this method returns an empty list — the caller (service layer
+        or API) is responsible for routing to trending/popular fallback.
+
+        Args:
+            history_ids:       Product IDs in viewing order, newest-first.
+            interaction_types: Optional dict mapping product_id → interaction type.
+                               Supported: 'view', 'view_repeat', 'wishlist', 'cart', 'purchase'.
+            top_k:             Number of recommendations to return.
+            candidate_pool:    Intermediate candidate pool size before MMR reranking.
+
+        Returns:
+            List of RecommendationResult with personalized reasoning and scores.
+        """
+        if not self._personalized_engine:
+            logger.warning(
+                "recommend_personalized called but PersonalizedEngine is not available. "
+                "Falling back to empty list."
+            )
+            return []
+
+        if not history_ids:
+            return []
+
+        logger.info(
+            f"[RecommendationEngine] recommend_personalized("
+            f"history={history_ids}, k={top_k})"
+        )
+
+        results = self._personalized_engine.recommend_for_session(
+            history_ids=history_ids,
+            interaction_types=interaction_types,
+            top_k=top_k,
+            candidate_pool=candidate_pool,
+        )
+
+        # Enrich with confidence grades and reason_dict for API response
+        return self._enrich_explanations(results)
+
+    def get_evaluator(self):
+        """
+        Return a RecommendationEvaluator configured with this engine's artifacts.
+        Suitable for offline evaluation and MLflow metric logging.
+        """
+        from src.engines.recommendation_evaluator import RecommendationEvaluator
+        return RecommendationEvaluator(
+            catalog_size=len(self._df),
+            sim_matrix=self._sim_matrix,
+            product_index=self._id_to_idx,
+        )
 
     def similar_products(
         self,

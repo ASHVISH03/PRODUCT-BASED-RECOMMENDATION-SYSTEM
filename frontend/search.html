@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - AmazClone</title>
+    <meta name="description" content="Search results for products.">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body data-theme="dark">
+    
+    <!-- Shared Navbar -->
+    <div class="navbar-wrapper container">
+        <nav class="navbar glass">
+            <div class="nav-brand">
+                <a href="index.html">
+                    <i class="ph-fill ph-robot" style="color: var(--brand-secondary);"></i>
+                    <span>amaz<span style="color: var(--brand-primary);">clone</span></span>
+                </a>
+            </div>
+            
+            <div class="nav-search">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search products, brands, or categories..." autocomplete="off">
+                <i class="ph-fill ph-microphone voice-icon" onclick="alert('Voice search is not enabled in this version.')" title="Voice Search"></i>
+                
+                <!-- Autocomplete Dropdown -->
+                <div class="search-dropdown" id="search-dropdown">
+                    <!-- JS Injected Suggestions -->
+                </div>
+            </div>
+            
+            <div class="nav-tools">
+                <button class="btn-icon" id="theme-toggle" title="Toggle Theme">
+                    <i class="ph-fill ph-sun"></i>
+                </button>
+                <a href="#" class="nav-link" id="nav-wishlist-btn"><i class="ph ph-heart"></i> Wishlist</a>
+                <a href="#" class="nav-link" id="nav-cart-btn"><i class="ph ph-shopping-cart"></i> Cart</a>
+            </div>
+        </nav>
+        
+        <!-- Category Scroller -->
+        <nav class="category-nav fade-in" id="category-nav-container">
+            <div class="skeleton" style="width: 80px; height: 20px;"></div>
+            <div class="skeleton" style="width: 100px; height: 20px;"></div>
+            <div class="skeleton" style="width: 120px; height: 20px;"></div>
+        </nav>
+    </div>
+
+    <!-- Search Layout -->
+    <main class="container search-layout fade-up" id="main-content">
+        
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar">
+            <div class="filter-section">
+                <h3 class="filter-title">Category</h3>
+                <div id="filter-categories">
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:80%"></div>
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:60%"></div>
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:70%"></div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Brand</h3>
+                <div id="filter-brands">
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:50%"></div>
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:90%"></div>
+                    <div class="skeleton" style="height:15px; margin-bottom:10px; width:40%"></div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3 class="filter-title">Price Range</h3>
+                <div class="range-slider-wrapper">
+                    <input type="range" id="price-slider" min="0" max="100000" step="500" value="100000" style="width:100%; accent-color:var(--brand-secondary);">
+                    <div class="range-slider-labels">
+                        <span>₹0</span>
+                        <span id="price-slider-val">₹100,000+</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Minimum Rating</h3>
+                <div id="filter-ratings">
+                    <label class="filter-item">
+                        <input type="radio" name="rating" value="4" class="filter-checkbox">
+                        4.0 & Up
+                    </label>
+                    <label class="filter-item">
+                        <input type="radio" name="rating" value="3" class="filter-checkbox">
+                        3.0 & Up
+                    </label>
+                    <label class="filter-item">
+                        <input type="radio" name="rating" value="0" class="filter-checkbox" checked>
+                        Any Rating
+                    </label>
+                </div>
+            </div>
+            
+            <button class="btn btn-secondary" style="width:100%; padding: 0.6rem;" id="clear-filters-btn">Clear All Filters</button>
+        </aside>
+
+        <!-- Main Results -->
+        <section>
+            <!-- Toolbar -->
+            <div class="search-toolbar">
+                <div style="font-size: 1.1rem; font-weight: 600;">
+                    <span id="search-title">Loading results...</span>
+                    <span id="search-count" style="color: var(--text-tertiary); font-weight: 400; font-size: 0.9rem; margin-left: 0.5rem;"></span>
+                </div>
+                
+                <div style="display: flex; gap: 1.5rem; align-items: center;">
+                    <!-- Sort -->
+                    <select id="sort-select" style="background: var(--bg-base); border: 1px solid var(--border-strong); color: var(--text-primary); padding: 0.4rem 0.8rem; border-radius: var(--radius-md); font-family: inherit; font-size: 0.9rem; outline: none; cursor:pointer;">
+                        <option value="relevance">Sort by: Relevance</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="rating">Average Rating</option>
+                    </select>
+
+                    <!-- View Toggles -->
+                    <div class="view-toggles">
+                        <button class="view-toggle active" id="view-grid" title="Grid View">
+                            <i class="ph-fill ph-squares-four"></i>
+                        </button>
+                        <button class="view-toggle" id="view-list" title="List View">
+                            <i class="ph ph-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="product-grid" id="search-results-grid">
+                <!-- Skeletons -->
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+                <div class="product-card skeleton" style="height:400px; border:none"></div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="search-empty-state" style="display:none; text-align:center; padding: 4rem 2rem; background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); margin-top: 1rem;">
+                <i class="ph-duotone ph-magnifying-glass" style="font-size: 4rem; color: var(--text-tertiary); margin-bottom: 1rem;"></i>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">No results found</h3>
+                <p style="color: var(--text-secondary); max-width: 400px; margin: 0 auto;">Try adjusting your filters or search for something else like "electronics" or "shoes".</p>
+            </div>
+            
+            <!-- Pagination Placeholder -->
+            <div id="search-pagination" style="display:flex; justify-content:center; gap:0.5rem; margin-top:3rem;"></div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer style="margin-top: 4rem; padding: 4rem 2rem; border-top: 1px solid var(--border-subtle); background: var(--bg-surface);">
+        <div class="container">
+            <p style="color: var(--text-tertiary); text-align: center;">&copy; 2026 AmazClone Search Architecture.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>

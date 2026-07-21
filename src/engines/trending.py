@@ -74,9 +74,16 @@ class TrendingEngine(BaseEngine):
     def _build_reason(self, row: pd.Series, rank: int) -> tuple:
         """Build reason string for a trending result."""
         tags: List[str] = ["Trending"]
-        rating = float(row.get("rating", 0) or 0)
-        rating_count = int(row.get("rating_count", 0) or 0)
-        cat1 = str(row.get("category_l1", ""))
+        
+        r_val = row.get("rating")
+        rating = float(r_val) if pd.notna(r_val) else 0.0
+        
+        rc_val = row.get("rating_count")
+        rating_count = int(float(rc_val)) if pd.notna(rc_val) and not math.isnan(float(rc_val)) else 0
+        
+        cat1 = str(row.get("category_l1", "") if pd.notna(row.get("category_l1")) else "")
+        if cat1.lower() == "nan":
+            cat1 = ""
 
         parts = []
         if cat1:
