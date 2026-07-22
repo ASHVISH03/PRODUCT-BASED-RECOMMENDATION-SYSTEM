@@ -1,0 +1,48 @@
+{
+  "evaluation_timestamp": "2026-07-14T13:37:39Z",
+  "dataset_version": "8eeeeec7c6f3",
+  "mlflow_run_id": null,
+  "model_params": {
+    "vocabulary_size": 5000,
+    "matrix_shape": [
+      1351,
+      1351
+    ],
+    "training_duration_s": 0.826
+  },
+  "metrics": {
+    "precision_at_5": 0.96,
+    "recall_at_5": 0.96,
+    "precision_at_10": 0.961,
+    "recall_at_10": 0.961,
+    "coverage": 0.3138,
+    "diversity": 0.5353,
+    "novelty": 0.17,
+    "intra_list_similarity": 0.4424,
+    "inference_latency_ms": 0.071
+  },
+  "precision_recall_by_k": [
+    {
+      "k": 5,
+      "precision": 0.96,
+      "recall": 0.96
+    },
+    {
+      "k": 10,
+      "precision": 0.961,
+      "recall": 0.961
+    }
+  ],
+  "thresholds": {
+    "min_precision_required": 0.5,
+    "precision_achieved": 0.96,
+    "meets_threshold": true
+  },
+  "sample_config": {
+    "sample_size": 100,
+    "k_values": [
+      5,
+      10
+    ]
+  }
+}

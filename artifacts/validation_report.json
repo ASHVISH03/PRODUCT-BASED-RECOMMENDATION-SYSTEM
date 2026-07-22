@@ -1,0 +1,130 @@
+{
+  "validation_status": true,
+  "validated_at": "2026-07-14T13:37:36Z",
+  "dataset_path": "D:\\Product-Recommendation-System\\data\\raw\\amazon.csv",
+  "dataset_version": "ee866c4757bb",
+  "record_count": 1465,
+  "column_count": 16,
+  "columns": [
+    "product_id",
+    "product_name",
+    "category",
+    "discounted_price",
+    "actual_price",
+    "discount_percentage",
+    "rating",
+    "rating_count",
+    "about_product",
+    "user_id",
+    "user_name",
+    "review_id",
+    "review_title",
+    "review_content",
+    "img_link",
+    "product_link"
+  ],
+  "summary": {
+    "total_issues": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "issues": [],
+  "column_stats": {
+    "product_id": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1351,
+      "dtype": "object"
+    },
+    "product_name": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1337,
+      "dtype": "object"
+    },
+    "category": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 211,
+      "dtype": "object"
+    },
+    "discounted_price": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 550,
+      "dtype": "object"
+    },
+    "actual_price": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 449,
+      "dtype": "object"
+    },
+    "discount_percentage": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 92,
+      "dtype": "object"
+    },
+    "rating": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 28,
+      "dtype": "object"
+    },
+    "rating_count": {
+      "null_count": 2,
+      "null_pct": 0.14,
+      "unique_count": 1143,
+      "dtype": "object"
+    },
+    "about_product": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1293,
+      "dtype": "object"
+    },
+    "user_id": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1194,
+      "dtype": "object"
+    },
+    "user_name": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1194,
+      "dtype": "object"
+    },
+    "review_id": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1194,
+      "dtype": "object"
+    },
+    "review_title": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1194,
+      "dtype": "object"
+    },
+    "review_content": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1212,
+      "dtype": "object"
+    },
+    "img_link": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1412,
+      "dtype": "object"
+    },
+    "product_link": {
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1465,
+      "dtype": "object"
+    }
+  }
+}

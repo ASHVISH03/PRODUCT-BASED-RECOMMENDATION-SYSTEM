@@ -1,0 +1,1008 @@
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | WARNING  | Primary dataset not found: data\raw\amazon.csv
+2026-07-14 13:24:02 | training             | INFO     | 
+2026-07-14 13:24:02 | training             | INFO     | ╔══════════════════════════════════════════════════════════╗
+2026-07-14 13:24:02 | training             | INFO     | ║         PRODUCT RECOMMENDATION SYSTEM PIPELINE           ║
+2026-07-14 13:24:02 | training             | INFO     | ║                  PHASE 2: DATA PIPELINE                  ║
+2026-07-14 13:24:02 | training             | INFO     | ╚══════════════════════════════════════════════════════════╝
+2026-07-14 13:24:02 | training             | INFO     | Started at: 2026-07-14T13:24:02.177273
+2026-07-14 13:24:02 | training             | INFO     | 
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | WARNING  | Primary dataset not found: data\raw\amazon.csv
+2026-07-14 13:24:02 | training             | ERROR    | Pipeline aborted: use_fallback=true but fallback file missing: data\external\sample_products.csv.
+Run: python scripts/generate_fallback.py
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:24:02 | training             | INFO     | ============================================================
+2026-07-14 13:24:02 | training             | WARNING  | Primary dataset not found: data\raw\nonexistent_test.csv
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | WARNING  | Primary dataset not found: data\raw\amazon.csv
+2026-07-14 13:37:11 | training             | WARNING  | 
+  ⚠️  ========================================================
+  ⚠️   DEVELOPMENT FALLBACK DATASET IN USE
+  ⚠️   This is synthetic data — NOT suitable for production.
+  ⚠️   To use the real dataset:
+  ⚠️     python scripts/setup_dataset.py
+  ⚠️  ========================================================
+2026-07-14 13:37:11 | training             | INFO     | Loading: data\external\sample_products.csv
+2026-07-14 13:37:11 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 13:37:11 | training             | INFO     |   Records    : 116
+2026-07-14 13:37:11 | training             | INFO     |   Columns    : 11
+2026-07-14 13:37:11 | training             | INFO     |   File size  : 0.03 MB
+2026-07-14 13:37:11 | training             | INFO     |   Version    : 6ee06ba0cdb1
+2026-07-14 13:37:11 | training             | INFO     |   Source     : fallback
+2026-07-14 13:37:11 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'img_link', 'product_link']
+2026-07-14 13:37:11 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 13:37:11 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | Loaded 116 records for validation
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.0% unparseable (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 0.0% (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 13:37:11 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 13:37:11 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 13:37:11 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 13:37:11 | training             | INFO     |   Records  : 116
+2026-07-14 13:37:11 | training             | INFO     |   Errors   : 0
+2026-07-14 13:37:11 | training             | INFO     |   Warnings : 0
+2026-07-14 13:37:11 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 13:37:11 | training             | INFO     |   Dupes    : 0 duplicate entries
+2026-07-14 13:37:11 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 13:37:11 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | Loaded 116 records for transformation
+2026-07-14 13:37:11 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'img_link', 'product_link']
+2026-07-14 13:37:11 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 0
+2026-07-14 13:37:11 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 0
+2026-07-14 13:37:11 | training             | INFO     |   Null handling — filled: 0, dropped: 0
+2026-07-14 13:37:11 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 13:37:11 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 13:37:11 | training             | INFO     |   Input records  : 116
+2026-07-14 13:37:11 | training             | INFO     |   Output records : 116
+2026-07-14 13:37:11 | training             | INFO     |   Removed (dups) : 0
+2026-07-14 13:37:11 | training             | INFO     |   Filled nulls   : 0
+2026-07-14 13:37:11 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 13:37:11 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 13:37:11 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | Loaded 116 cleaned records for feature engineering
+2026-07-14 13:37:11 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 1,048
+2026-07-14 13:37:11 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 17 unique
+2026-07-14 13:37:11 | training             | INFO     |   Brand extraction complete — 90 unique brands
+2026-07-14 13:37:11 | training             | INFO     |   Price buckets: {'Luxury': 56, 'Mid-Range': 29, 'Premium': 22, 'Budget': 9}
+2026-07-14 13:37:11 | training             | INFO     |   Popularity score stats: {'min': 0.7147, 'max': 1.0, 'mean': 0.8638, 'median': 0.8681}
+2026-07-14 13:37:11 | training             | INFO     |   Features created: 14
+2026-07-14 13:37:11 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 13:37:11 | training             | INFO     |   Final dataset shape: (116, 28)
+2026-07-14 13:37:11 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 13:37:11 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 13:37:11 | training             | INFO     | 
+2026-07-14 13:37:11 | training             | INFO     | ╔══════════════════════════════════════════════════════════╗
+2026-07-14 13:37:11 | training             | INFO     | ║         PRODUCT RECOMMENDATION SYSTEM PIPELINE           ║
+2026-07-14 13:37:11 | training             | INFO     | ║                  PHASE 2: DATA PIPELINE                  ║
+2026-07-14 13:37:11 | training             | INFO     | ╚══════════════════════════════════════════════════════════╝
+2026-07-14 13:37:11 | training             | INFO     | Started at: 2026-07-14T08:07:11Z
+2026-07-14 13:37:11 | training             | INFO     | 
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | WARNING  | Primary dataset not found: data\raw\amazon.csv
+2026-07-14 13:37:11 | training             | WARNING  | 
+  ⚠️  ========================================================
+  ⚠️   DEVELOPMENT FALLBACK DATASET IN USE
+  ⚠️   This is synthetic data — NOT suitable for production.
+  ⚠️   To use the real dataset:
+  ⚠️     python scripts/setup_dataset.py
+  ⚠️  ========================================================
+2026-07-14 13:37:11 | training             | INFO     | Loading: data\external\sample_products.csv
+2026-07-14 13:37:11 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 13:37:11 | training             | INFO     |   Records    : 116
+2026-07-14 13:37:11 | training             | INFO     |   Columns    : 11
+2026-07-14 13:37:11 | training             | INFO     |   File size  : 0.03 MB
+2026-07-14 13:37:11 | training             | INFO     |   Version    : 6ee06ba0cdb1
+2026-07-14 13:37:11 | training             | INFO     |   Source     : fallback
+2026-07-14 13:37:11 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'img_link', 'product_link']
+2026-07-14 13:37:11 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 13:37:11 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 13:37:11 | training             | INFO     | Data Ingestion duration: 0.04s
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | Loaded 116 records for validation
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.0% unparseable (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 0.0% (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 13:37:11 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 13:37:11 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 13:37:11 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 13:37:11 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 13:37:11 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 13:37:11 | training             | INFO     |   Records  : 116
+2026-07-14 13:37:11 | training             | INFO     |   Errors   : 0
+2026-07-14 13:37:11 | training             | INFO     |   Warnings : 0
+2026-07-14 13:37:11 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 13:37:11 | training             | INFO     |   Dupes    : 0 duplicate entries
+2026-07-14 13:37:11 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 13:37:11 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 13:37:11 | training             | INFO     | Data Validation duration: 0.10s
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 13:37:11 | training             | INFO     | ============================================================
+2026-07-14 13:37:11 | training             | INFO     | Loaded 116 records for transformation
+2026-07-14 13:37:11 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'img_link', 'product_link']
+2026-07-14 13:37:11 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 0
+2026-07-14 13:37:11 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 0
+2026-07-14 13:37:11 | training             | INFO     |   Null handling — filled: 0, dropped: 0
+2026-07-14 13:37:11 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 13:37:11 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 13:37:11 | training             | INFO     |   Input records  : 116
+2026-07-14 13:37:11 | training             | INFO     |   Output records : 116
+2026-07-14 13:37:11 | training             | INFO     |   Removed (dups) : 0
+2026-07-14 13:37:12 | training             | INFO     |   Filled nulls   : 0
+2026-07-14 13:37:12 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 13:37:12 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 13:37:12 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 13:37:12 | training             | INFO     | Data Transformation duration: 0.08s
+2026-07-14 13:37:12 | training             | INFO     | ============================================================
+2026-07-14 13:37:12 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 13:37:12 | training             | INFO     | ============================================================
+2026-07-14 13:37:12 | training             | INFO     | Loaded 116 cleaned records for feature engineering
+2026-07-14 13:37:12 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 1,048
+2026-07-14 13:37:12 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 17 unique
+2026-07-14 13:37:12 | training             | INFO     |   Brand extraction complete — 90 unique brands
+2026-07-14 13:37:12 | training             | INFO     |   Price buckets: {'Luxury': 56, 'Mid-Range': 29, 'Premium': 22, 'Budget': 9}
+2026-07-14 13:37:12 | training             | INFO     |   Popularity score stats: {'min': 0.7147, 'max': 1.0, 'mean': 0.8638, 'median': 0.8681}
+2026-07-14 13:37:12 | training             | INFO     |   Features created: 14
+2026-07-14 13:37:12 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 13:37:12 | training             | INFO     |   Final dataset shape: (116, 28)
+2026-07-14 13:37:12 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 13:37:12 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 13:37:12 | training             | INFO     | Feature Engineering duration: 0.27s
+2026-07-14 13:37:12 | training             | INFO     | 
+2026-07-14 13:37:12 | training             | INFO     | ╔══════════════════════════════════════════════════════════╗
+2026-07-14 13:37:12 | training             | INFO     | ║              PIPELINE COMPLETED SUCCESSFULLY             ║
+2026-07-14 13:37:12 | training             | INFO     | ║  Duration: 0.5s                                          ║
+2026-07-14 13:37:12 | training             | INFO     | ╚══════════════════════════════════════════════════════════╝
+2026-07-14 13:37:12 | training             | INFO     | Pipeline summary saved → artifacts/pipeline_summary.json
+2026-07-14 13:37:12 | training             | INFO     | ============================================================
+2026-07-14 13:37:12 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 13:37:12 | training             | INFO     | ============================================================
+2026-07-14 13:37:12 | training             | WARNING  | Primary dataset not found: data\raw\__nonexistent_test_file__.csv
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | Dataset source: primary (Kaggle) → data\raw\amazon.csv
+2026-07-14 17:57:12 | training             | INFO     | Loading: data\raw\amazon.csv
+2026-07-14 17:57:12 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 17:57:12 | training             | INFO     |   Records    : 1,465
+2026-07-14 17:57:12 | training             | INFO     |   Columns    : 16
+2026-07-14 17:57:12 | training             | INFO     |   File size  : 4.52 MB
+2026-07-14 17:57:12 | training             | INFO     |   Version    : ee866c4757bb
+2026-07-14 17:57:12 | training             | INFO     |   Source     : kaggle
+2026-07-14 17:57:12 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 17:57:12 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 17:57:12 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | Loaded 1,465 records for validation
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.1% unparseable (1 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 7.8% (114 rows)
+2026-07-14 17:57:12 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 17:57:12 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 17:57:12 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 17:57:12 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 17:57:12 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 17:57:12 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 17:57:12 | training             | INFO     |   Records  : 1,465
+2026-07-14 17:57:12 | training             | INFO     |   Errors   : 0
+2026-07-14 17:57:12 | training             | INFO     |   Warnings : 0
+2026-07-14 17:57:12 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 17:57:12 | training             | INFO     |   Dupes    : 114 duplicate entries
+2026-07-14 17:57:12 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 17:57:12 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 17:57:12 | training             | INFO     | ============================================================
+2026-07-14 17:57:12 | training             | INFO     | Loaded 1,465 records for transformation
+2026-07-14 17:57:12 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 17:57:12 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 1
+2026-07-14 17:57:12 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 114
+2026-07-14 17:57:12 | training             | INFO     |   Null handling — filled: 3, dropped: 0
+2026-07-14 17:57:13 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 17:57:13 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 17:57:13 | training             | INFO     |   Input records  : 1,465
+2026-07-14 17:57:13 | training             | INFO     |   Output records : 1,351
+2026-07-14 17:57:13 | training             | INFO     |   Removed (dups) : 114
+2026-07-14 17:57:13 | training             | INFO     |   Filled nulls   : 3
+2026-07-14 17:57:13 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 17:57:13 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 17:57:13 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 17:57:13 | training             | INFO     | ============================================================
+2026-07-14 17:57:13 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 17:57:13 | training             | INFO     | ============================================================
+2026-07-14 17:57:13 | training             | INFO     | Loaded 1,351 cleaned records for feature engineering
+2026-07-14 17:57:14 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 10,277
+2026-07-14 17:57:14 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 29 unique
+2026-07-14 17:57:14 | training             | INFO     |   Brand extraction complete — 395 unique brands
+2026-07-14 17:57:14 | training             | INFO     |   Price buckets: {'Budget': 501, 'Mid-Range': 499, 'Premium': 232, 'Luxury': 119}
+2026-07-14 17:57:14 | training             | INFO     |   Popularity score stats: {'min': 0.0, 'max': 1.0, 'mean': 0.8153, 'median': 0.8322}
+2026-07-14 17:57:14 | training             | INFO     |   Features created: 14
+2026-07-14 17:57:14 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 17:57:14 | training             | INFO     |   Final dataset shape: (1351, 33)
+2026-07-14 17:57:14 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 17:57:14 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 17:57:14 | training             | INFO     | 
+2026-07-14 17:57:14 | training             | INFO     | ╔══════════════════════════════════════════════════════════╗
+2026-07-14 17:57:14 | training             | INFO     | ║         PRODUCT RECOMMENDATION SYSTEM PIPELINE           ║
+2026-07-14 17:57:14 | training             | INFO     | ║                  PHASE 2: DATA PIPELINE                  ║
+2026-07-14 17:57:14 | training             | INFO     | ╚══════════════════════════════════════════════════════════╝
+2026-07-14 17:57:14 | training             | INFO     | Started at: 2026-07-14T12:27:14Z
+2026-07-14 17:57:14 | training             | INFO     | 
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | Dataset source: primary (Kaggle) → data\raw\amazon.csv
+2026-07-14 17:57:14 | training             | INFO     | Loading: data\raw\amazon.csv
+2026-07-14 17:57:14 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 17:57:14 | training             | INFO     |   Records    : 1,465
+2026-07-14 17:57:14 | training             | INFO     |   Columns    : 16
+2026-07-14 17:57:14 | training             | INFO     |   File size  : 4.52 MB
+2026-07-14 17:57:14 | training             | INFO     |   Version    : ee866c4757bb
+2026-07-14 17:57:14 | training             | INFO     |   Source     : kaggle
+2026-07-14 17:57:14 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 17:57:14 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 17:57:14 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 17:57:14 | training             | INFO     | Data Ingestion duration: 0.13s
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | Loaded 1,465 records for validation
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.1% unparseable (1 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 7.8% (114 rows)
+2026-07-14 17:57:14 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 17:57:14 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 17:57:14 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 17:57:14 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 17:57:14 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 17:57:14 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 17:57:14 | training             | INFO     |   Records  : 1,465
+2026-07-14 17:57:14 | training             | INFO     |   Errors   : 0
+2026-07-14 17:57:14 | training             | INFO     |   Warnings : 0
+2026-07-14 17:57:14 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 17:57:14 | training             | INFO     |   Dupes    : 114 duplicate entries
+2026-07-14 17:57:14 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 17:57:14 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 17:57:14 | training             | INFO     | Data Validation duration: 0.22s
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 17:57:14 | training             | INFO     | ============================================================
+2026-07-14 17:57:14 | training             | INFO     | Loaded 1,465 records for transformation
+2026-07-14 17:57:14 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 17:57:15 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 1
+2026-07-14 17:57:15 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 114
+2026-07-14 17:57:15 | training             | INFO     |   Null handling — filled: 3, dropped: 0
+2026-07-14 17:57:15 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 17:57:15 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 17:57:15 | training             | INFO     |   Input records  : 1,465
+2026-07-14 17:57:15 | training             | INFO     |   Output records : 1,351
+2026-07-14 17:57:15 | training             | INFO     |   Removed (dups) : 114
+2026-07-14 17:57:15 | training             | INFO     |   Filled nulls   : 3
+2026-07-14 17:57:15 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 17:57:15 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 17:57:15 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 17:57:15 | training             | INFO     | Data Transformation duration: 0.76s
+2026-07-14 17:57:15 | training             | INFO     | ============================================================
+2026-07-14 17:57:15 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 17:57:15 | training             | INFO     | ============================================================
+2026-07-14 17:57:15 | training             | INFO     | Loaded 1,351 cleaned records for feature engineering
+2026-07-14 17:57:15 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 10,277
+2026-07-14 17:57:15 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 29 unique
+2026-07-14 17:57:15 | training             | INFO     |   Brand extraction complete — 395 unique brands
+2026-07-14 17:57:15 | training             | INFO     |   Price buckets: {'Budget': 501, 'Mid-Range': 499, 'Premium': 232, 'Luxury': 119}
+2026-07-14 17:57:15 | training             | INFO     |   Popularity score stats: {'min': 0.0, 'max': 1.0, 'mean': 0.8153, 'median': 0.8322}
+2026-07-14 17:57:15 | training             | INFO     |   Features created: 14
+2026-07-14 17:57:15 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 17:57:15 | training             | INFO     |   Final dataset shape: (1351, 33)
+2026-07-14 17:57:16 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 17:57:16 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 17:57:16 | training             | INFO     | Feature Engineering duration: 0.57s
+2026-07-14 17:57:16 | training             | INFO     | 
+2026-07-14 17:57:16 | training             | INFO     | ╔══════════════════════════════════════════════════════════╗
+2026-07-14 17:57:16 | training             | INFO     | ║              PIPELINE COMPLETED SUCCESSFULLY             ║
+2026-07-14 17:57:16 | training             | INFO     | ║  Duration: 1.7s                                          ║
+2026-07-14 17:57:16 | training             | INFO     | ╚══════════════════════════════════════════════════════════╝
+2026-07-14 17:57:16 | training             | INFO     | Pipeline summary saved → artifacts/pipeline_summary.json
+2026-07-14 17:57:16 | training             | INFO     | ============================================================
+2026-07-14 17:57:16 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 17:57:16 | training             | INFO     | ============================================================
+2026-07-14 17:57:16 | training             | WARNING  | Primary dataset not found: data\raw\__nonexistent_test_file__.csv
+2026-07-14 19:04:33 | training             | INFO     | 
+2026-07-14 19:04:33 | training             | INFO     | ======================================================================
+2026-07-14 19:04:33 | training             | INFO     |   TRAINING PIPELINE — Starting
+2026-07-14 19:04:33 | training             | INFO     |   Timestamp: 2026-07-14T13:34:33Z
+2026-07-14 19:04:33 | training             | INFO     | ======================================================================
+2026-07-14 19:04:33 | training             | INFO     | STEP 1/7: Data Ingestion
+2026-07-14 19:04:33 | training             | INFO     | ============================================================
+2026-07-14 19:04:33 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 19:04:33 | training             | INFO     | ============================================================
+2026-07-14 19:04:33 | training             | INFO     | Dataset source: primary (Kaggle) → data\raw\amazon.csv
+2026-07-14 19:04:33 | training             | INFO     | Loading: data\raw\amazon.csv
+2026-07-14 19:04:33 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 19:04:33 | training             | INFO     |   Records    : 1,465
+2026-07-14 19:04:33 | training             | INFO     |   Columns    : 16
+2026-07-14 19:04:33 | training             | INFO     |   File size  : 4.52 MB
+2026-07-14 19:04:33 | training             | INFO     |   Version    : ee866c4757bb
+2026-07-14 19:04:33 | training             | INFO     |   Source     : kaggle
+2026-07-14 19:04:33 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 19:04:33 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 19:04:33 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 19:04:33 | training             | INFO     | Ingestion done in 0.13s — 1465 records from 'kaggle'
+2026-07-14 19:04:33 | training             | INFO     | STEP 2/7: Data Validation
+2026-07-14 19:04:33 | training             | INFO     | ============================================================
+2026-07-14 19:04:33 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 19:04:33 | training             | INFO     | ============================================================
+2026-07-14 19:04:33 | training             | INFO     | Loaded 1,465 records for validation
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.1% unparseable (1 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 19:04:33 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 7.8% (114 rows)
+2026-07-14 19:04:33 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 19:04:34 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 19:04:34 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 19:04:34 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 19:04:34 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 19:04:34 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 19:04:34 | training             | INFO     |   Records  : 1,465
+2026-07-14 19:04:34 | training             | INFO     |   Errors   : 0
+2026-07-14 19:04:34 | training             | INFO     |   Warnings : 0
+2026-07-14 19:04:34 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 19:04:34 | training             | INFO     |   Dupes    : 114 duplicate entries
+2026-07-14 19:04:34 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 19:04:34 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 19:04:34 | training             | INFO     | Validation done in 0.24s — status=True, issues=0
+2026-07-14 19:04:34 | training             | INFO     | STEP 3/7: Data Transformation
+2026-07-14 19:04:34 | training             | INFO     | ============================================================
+2026-07-14 19:04:34 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 19:04:34 | training             | INFO     | ============================================================
+2026-07-14 19:04:34 | training             | INFO     | Loaded 1,465 records for transformation
+2026-07-14 19:04:34 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 19:04:34 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 1
+2026-07-14 19:04:34 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 114
+2026-07-14 19:04:34 | training             | INFO     |   Null handling — filled: 3, dropped: 0
+2026-07-14 19:04:34 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 19:04:34 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 19:04:34 | training             | INFO     |   Input records  : 1,465
+2026-07-14 19:04:34 | training             | INFO     |   Output records : 1,351
+2026-07-14 19:04:34 | training             | INFO     |   Removed (dups) : 114
+2026-07-14 19:04:34 | training             | INFO     |   Filled nulls   : 3
+2026-07-14 19:04:34 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 19:04:34 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 19:04:34 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 19:04:34 | training             | INFO     | Transformation done in 0.77s — 1465 → 1351 records
+2026-07-14 19:04:34 | training             | INFO     | STEP 4/7: Feature Engineering
+2026-07-14 19:04:34 | training             | INFO     | ============================================================
+2026-07-14 19:04:34 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 19:04:34 | training             | INFO     | ============================================================
+2026-07-14 19:04:34 | training             | INFO     | Loaded 1,351 cleaned records for feature engineering
+2026-07-14 19:04:35 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 10,277
+2026-07-14 19:04:35 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 29 unique
+2026-07-14 19:04:35 | training             | INFO     |   Brand extraction complete — 395 unique brands
+2026-07-14 19:04:35 | training             | INFO     |   Price buckets: {'Budget': 501, 'Mid-Range': 499, 'Premium': 232, 'Luxury': 119}
+2026-07-14 19:04:35 | training             | INFO     |   Popularity score stats: {'min': 0.0, 'max': 1.0, 'mean': 0.8153, 'median': 0.8322}
+2026-07-14 19:04:35 | training             | INFO     |   Features created: 14
+2026-07-14 19:04:35 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 19:04:35 | training             | INFO     |   Final dataset shape: (1351, 33)
+2026-07-14 19:04:35 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 19:04:35 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 19:04:35 | training             | INFO     | Feature Engineering done in 0.55s — 14 features, vocab_est=10277
+2026-07-14 19:04:35 | training             | INFO     | STEP 5/7: Model Training
+2026-07-14 19:04:35 | training             | INFO     | ============================================================
+2026-07-14 19:04:35 | training             | INFO     |   MODEL TRAINING — Phase 3
+2026-07-14 19:04:35 | training             | INFO     | ============================================================
+2026-07-14 19:04:35 | training             | WARNING  | MLflow setup failed (will continue without): No module named 'mlflow'
+2026-07-14 19:04:35 | training             | INFO     | Loading features from: D:\Product-Recommendation-System\data\processed\features.csv
+2026-07-14 19:04:35 | training             | INFO     | Loaded 1351 records with 33 columns
+2026-07-14 19:04:35 | training             | INFO     | Step 1/4: Fitting TF-IDF vectorizer...
+2026-07-14 19:04:35 | training             | INFO     | Fitting TF-IDF on column: combined_text_tfidf
+2026-07-14 19:04:35 | training             | INFO     | Corpus size: 1351 documents
+2026-07-14 19:04:36 | training             | INFO     | TF-IDF fitted: vocab_size=5000, matrix_shape=(1351, 5000)
+2026-07-14 19:04:36 | training             | INFO     | Step 2/4: Computing cosine similarity matrix...
+2026-07-14 19:04:36 | training             | INFO     | Computing cosine similarity matrix (1351×1351)...
+2026-07-14 19:04:36 | training             | INFO     | Similarity matrix shape=(1351, 1351), dtype=float32, size=7.0MB
+2026-07-14 19:04:36 | training             | INFO     | Step 3/4: Building product index...
+2026-07-14 19:04:36 | training             | INFO     | Step 4/4: Saving model artifacts...
+2026-07-14 19:04:36 | training             | INFO     | Saved vectorizer: models/tfidf.pkl
+2026-07-14 19:04:36 | training             | INFO     | Saved similarity matrix: models/similarity.pkl
+2026-07-14 19:04:36 | training             | INFO     | Saved product index: models/product_index.pkl
+2026-07-14 19:04:36 | training             | INFO     | Saved processed products: models\processed_products.csv
+2026-07-14 19:04:36 | training             | INFO     | Saved metadata: models/metadata.json
+2026-07-14 19:04:36 | training             | INFO     | ============================================================
+2026-07-14 19:04:36 | training             | INFO     |   MODEL TRAINING COMPLETE
+2026-07-14 19:04:36 | training             | INFO     |   Duration   : 0.82s
+2026-07-14 19:04:36 | training             | INFO     |   Vocabulary : 5,000 features
+2026-07-14 19:04:36 | training             | INFO     |   Products   : 1,351
+2026-07-14 19:04:36 | training             | INFO     |   Matrix     : (1351, 1351)
+2026-07-14 19:04:36 | training             | INFO     | ============================================================
+2026-07-14 19:04:36 | training             | INFO     | Training report: artifacts/training_report.html
+2026-07-14 19:04:36 | training             | INFO     | Model Training done in 1.17s — vocab=5000, shape=(1351, 1351)
+2026-07-14 19:04:36 | training             | INFO     | STEP 6/7: Model Evaluation
+2026-07-14 19:04:36 | training             | INFO     | ============================================================
+2026-07-14 19:04:36 | training             | INFO     |   MODEL EVALUATION — Phase 3
+2026-07-14 19:04:36 | training             | INFO     | ============================================================
+2026-07-14 19:04:36 | training             | INFO     | Loading model artifacts for evaluation...
+2026-07-14 19:04:36 | training             | INFO     | Loaded 1351 products for evaluation
+2026-07-14 19:04:36 | training             | INFO     | Loaded similarity matrix: (1351, 1351)
+2026-07-14 19:04:36 | training             | INFO     | Loaded product index: 1351 entries
+2026-07-14 19:04:36 | training             | INFO     | Evaluating with k_values=[5, 10], sample_size=100
+2026-07-14 19:04:36 | training             | INFO     | Computing Precision@5 and Recall@5...
+2026-07-14 19:04:36 | training             | INFO     |   Precision@5=0.9556, Recall@5=0.9556
+2026-07-14 19:04:36 | training             | INFO     | Computing Precision@10 and Recall@10...
+2026-07-14 19:04:36 | training             | INFO     |   Precision@10=0.9540, Recall@10=0.9540
+2026-07-14 19:04:36 | training             | INFO     | Computing Coverage...
+2026-07-14 19:04:36 | training             | INFO     |   Coverage=0.3020
+2026-07-14 19:04:36 | training             | INFO     | Computing Diversity...
+2026-07-14 19:04:36 | training             | INFO     |   Diversity=0.5291
+2026-07-14 19:04:36 | training             | INFO     | Computing Novelty...
+2026-07-14 19:04:36 | training             | INFO     |   Novelty=0.1882
+2026-07-14 19:04:36 | training             | INFO     | Computing Intra-List Similarity...
+2026-07-14 19:04:36 | training             | INFO     |   ILS=0.4691
+2026-07-14 19:04:36 | training             | INFO     | Measuring Inference Latency...
+2026-07-14 19:04:37 | training             | INFO     |   Median Latency=0.072ms
+2026-07-14 19:04:37 | training             | INFO     | Threshold check PASSED: Precision@5=0.9556 >= 0.5
+2026-07-14 19:04:37 | training             | INFO     | Evaluation report saved: artifacts/evaluation_report.json
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | INFO     |   MODEL EVALUATION COMPLETE
+2026-07-14 19:04:37 | training             | INFO     |   precision_at_5                     : 0.9556
+2026-07-14 19:04:37 | training             | INFO     |   recall_at_5                        : 0.9556
+2026-07-14 19:04:37 | training             | INFO     |   precision_at_10                    : 0.954
+2026-07-14 19:04:37 | training             | INFO     |   recall_at_10                       : 0.954
+2026-07-14 19:04:37 | training             | INFO     |   coverage                           : 0.302
+2026-07-14 19:04:37 | training             | INFO     |   diversity                          : 0.5291
+2026-07-14 19:04:37 | training             | INFO     |   novelty                            : 0.1882
+2026-07-14 19:04:37 | training             | INFO     |   intra_list_similarity              : 0.4691
+2026-07-14 19:04:37 | training             | INFO     |   inference_latency_ms               : 0.072
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | INFO     | Model Evaluation done in 0.45s — coverage=0.302, diversity=0.529, threshold_met=True
+2026-07-14 19:04:37 | training             | INFO     | STEP 7/7: Model Registry
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | INFO     |   MODEL REGISTRY — Phase 3
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | WARNING  | No MLflow run_id available — skipping registry registration
+2026-07-14 19:04:37 | training             | INFO     | Local registry updated: artifacts\model_registry.json (version 1)
+2026-07-14 19:04:37 | training             | INFO     | Local registry: recommendation-model v1 (Staging)
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | INFO     |   REGISTRY COMPLETE: recommendation-model v1 [Staging]
+2026-07-14 19:04:37 | training             | INFO     | ============================================================
+2026-07-14 19:04:37 | training             | INFO     | Model Registry done in 0.01s — recommendation-model v1 [Staging]
+2026-07-14 19:04:37 | training             | INFO     | Pipeline summary saved: artifacts/pipeline_summary.json
+2026-07-14 19:04:37 | training             | INFO     | 
+2026-07-14 19:04:37 | training             | INFO     | ======================================================================
+2026-07-14 19:04:37 | training             | INFO     |   TRAINING PIPELINE — COMPLETE (3.34s)
+2026-07-14 19:04:37 | training             | INFO     | ======================================================================
+2026-07-14 19:04:37 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 19:04:37 | training             | INFO     | Artifacts loaded in 0.15s
+2026-07-14 19:04:37 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 19:04:37 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-14 19:07:35 | training             | INFO     | 
+2026-07-14 19:07:35 | training             | INFO     | ======================================================================
+2026-07-14 19:07:35 | training             | INFO     |   TRAINING PIPELINE — Starting
+2026-07-14 19:07:35 | training             | INFO     |   Timestamp: 2026-07-14T13:37:35Z
+2026-07-14 19:07:35 | training             | INFO     | ======================================================================
+2026-07-14 19:07:35 | training             | INFO     | STEP 1/7: Data Ingestion
+2026-07-14 19:07:35 | training             | INFO     | ============================================================
+2026-07-14 19:07:35 | training             | INFO     | STEP 1: DATA INGESTION
+2026-07-14 19:07:35 | training             | INFO     | ============================================================
+2026-07-14 19:07:35 | training             | INFO     | Dataset source: primary (Kaggle) → data\raw\amazon.csv
+2026-07-14 19:07:35 | training             | INFO     | Loading: data\raw\amazon.csv
+2026-07-14 19:07:35 | training             | INFO     | CSV loaded with UTF-8 encoding
+2026-07-14 19:07:36 | training             | INFO     |   Records    : 1,465
+2026-07-14 19:07:36 | training             | INFO     |   Columns    : 16
+2026-07-14 19:07:36 | training             | INFO     |   File size  : 4.52 MB
+2026-07-14 19:07:36 | training             | INFO     |   Version    : ee866c4757bb
+2026-07-14 19:07:36 | training             | INFO     |   Source     : kaggle
+2026-07-14 19:07:36 | training             | INFO     |   Columns    : ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 19:07:36 | training             | INFO     | Ingestion metadata saved → artifacts/ingestion_metadata.json
+2026-07-14 19:07:36 | training             | INFO     | STEP 1 COMPLETE: Data Ingestion
+2026-07-14 19:07:36 | training             | INFO     | Ingestion done in 0.13s — 1465 records from 'kaggle'
+2026-07-14 19:07:36 | training             | INFO     | STEP 2/7: Data Validation
+2026-07-14 19:07:36 | training             | INFO     | ============================================================
+2026-07-14 19:07:36 | training             | INFO     | STEP 2: DATA VALIDATION
+2026-07-14 19:07:36 | training             | INFO     | ============================================================
+2026-07-14 19:07:36 | training             | INFO     | Loaded 1,465 records for validation
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: required_columns_present
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] required_columns_present: All 11 required columns present
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: product_id_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] product_id_not_null: product_id — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: product_name_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] product_name_not_null: product_name — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: category_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] category_not_null: category — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: discounted_price_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] discounted_price_not_null: discounted_price — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: actual_price_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] actual_price_not_null: actual_price — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: rating_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] rating_not_null: rating — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: about_product_not_null
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] about_product_not_null: about_product — 0.0% missing (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: product_name_not_empty
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] product_name_not_empty: product_name — 0.0% empty (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: category_not_empty
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] category_not_empty: category — 0.0% empty (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: about_product_not_empty
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] about_product_not_empty: about_product — 0.0% empty (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: rating_parseable_numeric
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] rating_parseable_numeric: rating — 0.1% unparseable (1 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: rating_count_parseable_numeric
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] rating_count_parseable_numeric: rating_count — 0.0% unparseable (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: rating_range_valid
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] rating_range_valid: rating — all values in [0.0, 5.0]
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: discount_pct_range_valid
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] discount_pct_range_valid: discount_percentage — all values in [0.0, 100.0]
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: no_duplicate_product_ids
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] no_duplicate_product_ids: product_id duplicates — 7.8% (114 rows)
+2026-07-14 19:07:36 | training             | INFO     | Checking rule: no_duplicate_rows
+2026-07-14 19:07:36 | training             | INFO     |   [PASS] no_duplicate_rows: fully duplicate rows — 0.0% (0 rows)
+2026-07-14 19:07:36 | training             | INFO     | Validation report saved → artifacts\validation_report.json
+2026-07-14 19:07:36 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 19:07:36 | training             | INFO     | VALIDATION SUMMARY
+2026-07-14 19:07:36 | training             | INFO     |   Status   : PASSED ✓
+2026-07-14 19:07:36 | training             | INFO     |   Records  : 1,465
+2026-07-14 19:07:36 | training             | INFO     |   Errors   : 0
+2026-07-14 19:07:36 | training             | INFO     |   Warnings : 0
+2026-07-14 19:07:36 | training             | INFO     |   Missing  : 0 total null values
+2026-07-14 19:07:36 | training             | INFO     |   Dupes    : 114 duplicate entries
+2026-07-14 19:07:36 | training             | INFO     | ------------------------------------------------------------
+2026-07-14 19:07:36 | training             | INFO     | STEP 2 COMPLETE: Data Validation PASSED
+2026-07-14 19:07:36 | training             | INFO     | Validation done in 0.21s — status=True, issues=0
+2026-07-14 19:07:36 | training             | INFO     | STEP 3/7: Data Transformation
+2026-07-14 19:07:36 | training             | INFO     | ============================================================
+2026-07-14 19:07:36 | training             | INFO     | STEP 3: DATA TRANSFORMATION
+2026-07-14 19:07:36 | training             | INFO     | ============================================================
+2026-07-14 19:07:36 | training             | INFO     | Loaded 1,465 records for transformation
+2026-07-14 19:07:36 | training             | INFO     |   Columns standardized: ['product_id', 'product_name', 'category', 'discounted_price', 'actual_price', 'discount_percentage', 'rating', 'rating_count', 'about_product', 'user_id', 'user_name', 'review_id', 'review_title', 'review_content', 'img_link', 'product_link']
+2026-07-14 19:07:36 | training             | INFO     |   Numeric parsing complete — price nulls: 0, rating nulls: 1
+2026-07-14 19:07:36 | training             | INFO     |   Duplicates removed — full rows: 0, product_id: 114
+2026-07-14 19:07:36 | training             | INFO     |   Null handling — filled: 3, dropped: 0
+2026-07-14 19:07:36 | training             | INFO     |   Interim data saved → data\interim\interim.csv
+2026-07-14 19:07:36 | training             | INFO     |   Text columns normalized: ['product_name', 'category', 'about_product']
+2026-07-14 19:07:36 | training             | INFO     |   Input records  : 1,465
+2026-07-14 19:07:36 | training             | INFO     |   Output records : 1,351
+2026-07-14 19:07:36 | training             | INFO     |   Removed (dups) : 114
+2026-07-14 19:07:36 | training             | INFO     |   Filled nulls   : 3
+2026-07-14 19:07:36 | training             | INFO     |   Dropped (null) : 0
+2026-07-14 19:07:36 | training             | INFO     |   Processed data saved → data\processed\cleaned.csv
+2026-07-14 19:07:37 | training             | INFO     | STEP 3 COMPLETE: Data Transformation
+2026-07-14 19:07:37 | training             | INFO     | Transformation done in 0.76s — 1465 → 1351 records
+2026-07-14 19:07:37 | training             | INFO     | STEP 4/7: Feature Engineering
+2026-07-14 19:07:37 | training             | INFO     | ============================================================
+2026-07-14 19:07:37 | training             | INFO     | STEP 4: FEATURE ENGINEERING
+2026-07-14 19:07:37 | training             | INFO     | ============================================================
+2026-07-14 19:07:37 | training             | INFO     | Loaded 1,351 cleaned records for feature engineering
+2026-07-14 19:07:37 | training             | INFO     |   Combined text built from: ['product_name_clean', 'category_clean', 'about_product_clean']. Vocabulary estimate: 10,277
+2026-07-14 19:07:37 | training             | INFO     |   Category hierarchy — L1: 9 unique, L2: 29 unique
+2026-07-14 19:07:37 | training             | INFO     |   Brand extraction complete — 395 unique brands
+2026-07-14 19:07:37 | training             | INFO     |   Price buckets: {'Budget': 501, 'Mid-Range': 499, 'Premium': 232, 'Luxury': 119}
+2026-07-14 19:07:37 | training             | INFO     |   Popularity score stats: {'min': 0.0, 'max': 1.0, 'mean': 0.8153, 'median': 0.8322}
+2026-07-14 19:07:37 | training             | INFO     |   Features created: 14
+2026-07-14 19:07:37 | training             | INFO     |   Feature columns: ['combined_text', 'combined_text_tfidf', 'category_l1', 'category_l2', 'category_l3', 'brand', 'price_bucket', 'price_normalized', 'popularity_score', 'discount_tier', 'is_highly_rated', 'is_budget', 'has_description', 'has_image']
+2026-07-14 19:07:37 | training             | INFO     |   Final dataset shape: (1351, 33)
+2026-07-14 19:07:37 | training             | INFO     |   Features saved → data\processed\features.csv
+2026-07-14 19:07:37 | training             | INFO     | STEP 4 COMPLETE: Feature Engineering
+2026-07-14 19:07:37 | training             | INFO     | Feature Engineering done in 0.56s — 14 features, vocab_est=10277
+2026-07-14 19:07:37 | training             | INFO     | STEP 5/7: Model Training
+2026-07-14 19:07:37 | training             | INFO     | ============================================================
+2026-07-14 19:07:37 | training             | INFO     |   MODEL TRAINING — Phase 3
+2026-07-14 19:07:37 | training             | INFO     | ============================================================
+2026-07-14 19:07:37 | training             | WARNING  | MLflow setup failed (will continue without): No module named 'mlflow'
+2026-07-14 19:07:37 | training             | INFO     | Loading features from: D:\Product-Recommendation-System\data\processed\features.csv
+2026-07-14 19:07:37 | training             | INFO     | Loaded 1351 records with 33 columns
+2026-07-14 19:07:37 | training             | INFO     | Step 1/4: Fitting TF-IDF vectorizer...
+2026-07-14 19:07:37 | training             | INFO     | Fitting TF-IDF on column: combined_text_tfidf
+2026-07-14 19:07:37 | training             | INFO     | Corpus size: 1351 documents
+2026-07-14 19:07:38 | training             | INFO     | TF-IDF fitted: vocab_size=5000, matrix_shape=(1351, 5000)
+2026-07-14 19:07:38 | training             | INFO     | Step 2/4: Computing cosine similarity matrix...
+2026-07-14 19:07:38 | training             | INFO     | Computing cosine similarity matrix (1351×1351)...
+2026-07-14 19:07:38 | training             | INFO     | Similarity matrix shape=(1351, 1351), dtype=float32, size=7.0MB
+2026-07-14 19:07:38 | training             | INFO     | Step 3/4: Building product index...
+2026-07-14 19:07:38 | training             | INFO     | Step 4/4: Saving model artifacts...
+2026-07-14 19:07:38 | training             | INFO     | Saved vectorizer: models/tfidf.pkl
+2026-07-14 19:07:38 | training             | INFO     | Saved similarity matrix: models/similarity.pkl
+2026-07-14 19:07:38 | training             | INFO     | Saved product index: models/product_index.pkl
+2026-07-14 19:07:38 | training             | INFO     | Saved processed products: models\processed_products.csv
+2026-07-14 19:07:38 | training             | INFO     | Saved metadata: models/metadata.json
+2026-07-14 19:07:38 | training             | INFO     | ============================================================
+2026-07-14 19:07:38 | training             | INFO     |   MODEL TRAINING COMPLETE
+2026-07-14 19:07:38 | training             | INFO     |   Duration   : 0.83s
+2026-07-14 19:07:38 | training             | INFO     |   Vocabulary : 5,000 features
+2026-07-14 19:07:38 | training             | INFO     |   Products   : 1,351
+2026-07-14 19:07:38 | training             | INFO     |   Matrix     : (1351, 1351)
+2026-07-14 19:07:38 | training             | INFO     | ============================================================
+2026-07-14 19:07:38 | training             | INFO     | Training report: artifacts/training_report.html
+2026-07-14 19:07:38 | training             | INFO     | Model Training done in 1.18s — vocab=5000, shape=(1351, 1351)
+2026-07-14 19:07:38 | training             | INFO     | STEP 6/7: Model Evaluation
+2026-07-14 19:07:38 | training             | INFO     | ============================================================
+2026-07-14 19:07:38 | training             | INFO     |   MODEL EVALUATION — Phase 3
+2026-07-14 19:07:38 | training             | INFO     | ============================================================
+2026-07-14 19:07:38 | training             | INFO     | Loading model artifacts for evaluation...
+2026-07-14 19:07:38 | training             | INFO     | Loaded 1351 products for evaluation
+2026-07-14 19:07:38 | training             | INFO     | Loaded similarity matrix: (1351, 1351)
+2026-07-14 19:07:38 | training             | INFO     | Loaded product index: 1351 entries
+2026-07-14 19:07:38 | training             | INFO     | Evaluating with k_values=[5, 10], sample_size=100
+2026-07-14 19:07:38 | training             | INFO     | Computing Precision@5 and Recall@5...
+2026-07-14 19:07:39 | training             | INFO     |   Precision@5=0.9600, Recall@5=0.9600
+2026-07-14 19:07:39 | training             | INFO     | Computing Precision@10 and Recall@10...
+2026-07-14 19:07:39 | training             | INFO     |   Precision@10=0.9610, Recall@10=0.9610
+2026-07-14 19:07:39 | training             | INFO     | Computing Coverage...
+2026-07-14 19:07:39 | training             | INFO     |   Coverage=0.3138
+2026-07-14 19:07:39 | training             | INFO     | Computing Diversity...
+2026-07-14 19:07:39 | training             | INFO     |   Diversity=0.5353
+2026-07-14 19:07:39 | training             | INFO     | Computing Novelty...
+2026-07-14 19:07:39 | training             | INFO     |   Novelty=0.1700
+2026-07-14 19:07:39 | training             | INFO     | Computing Intra-List Similarity...
+2026-07-14 19:07:39 | training             | INFO     |   ILS=0.4424
+2026-07-14 19:07:39 | training             | INFO     | Measuring Inference Latency...
+2026-07-14 19:07:39 | training             | INFO     |   Median Latency=0.071ms
+2026-07-14 19:07:39 | training             | INFO     | Threshold check PASSED: Precision@5=0.9600 >= 0.5
+2026-07-14 19:07:39 | training             | INFO     | Evaluation report saved: artifacts/evaluation_report.json
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | INFO     |   MODEL EVALUATION COMPLETE
+2026-07-14 19:07:39 | training             | INFO     |   precision_at_5                     : 0.96
+2026-07-14 19:07:39 | training             | INFO     |   recall_at_5                        : 0.96
+2026-07-14 19:07:39 | training             | INFO     |   precision_at_10                    : 0.961
+2026-07-14 19:07:39 | training             | INFO     |   recall_at_10                       : 0.961
+2026-07-14 19:07:39 | training             | INFO     |   coverage                           : 0.3138
+2026-07-14 19:07:39 | training             | INFO     |   diversity                          : 0.5353
+2026-07-14 19:07:39 | training             | INFO     |   novelty                            : 0.17
+2026-07-14 19:07:39 | training             | INFO     |   intra_list_similarity              : 0.4424
+2026-07-14 19:07:39 | training             | INFO     |   inference_latency_ms               : 0.071
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | INFO     | Model Evaluation done in 0.45s — coverage=0.314, diversity=0.535, threshold_met=True
+2026-07-14 19:07:39 | training             | INFO     | STEP 7/7: Model Registry
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | INFO     |   MODEL REGISTRY — Phase 3
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | WARNING  | No MLflow run_id available — skipping registry registration
+2026-07-14 19:07:39 | training             | INFO     | Local registry updated: artifacts\model_registry.json (version 2)
+2026-07-14 19:07:39 | training             | INFO     | Local registry: recommendation-model v2 (Staging)
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | INFO     |   REGISTRY COMPLETE: recommendation-model v2 [Staging]
+2026-07-14 19:07:39 | training             | INFO     | ============================================================
+2026-07-14 19:07:39 | training             | INFO     | Model Registry done in 0.02s — recommendation-model v2 [Staging]
+2026-07-14 19:07:39 | training             | INFO     | Pipeline summary saved: artifacts/pipeline_summary.json
+2026-07-14 19:07:39 | training             | INFO     | 
+2026-07-14 19:07:39 | training             | INFO     | ======================================================================
+2026-07-14 19:07:39 | training             | INFO     |   TRAINING PIPELINE — COMPLETE (3.33s)
+2026-07-14 19:07:39 | training             | INFO     | ======================================================================
+2026-07-14 19:07:39 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 19:07:39 | training             | INFO     | Artifacts loaded in 0.15s
+2026-07-14 19:07:39 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 19:07:39 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-14 19:50:18 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 19:50:18 | training             | INFO     | Artifacts loaded in 0.17s
+2026-07-14 19:50:18 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 19:50:18 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-14 19:53:52 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 19:53:52 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-14 19:53:52 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 19:53:52 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-14 20:08:26 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 20:08:26 | training             | INFO     | Artifacts loaded in 0.15s
+2026-07-14 20:08:26 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 20:08:26 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-14 22:53:41 | training             | INFO     | Loading model artifacts from: models
+2026-07-14 22:53:41 | training             | INFO     | Artifacts loaded in 0.37s
+2026-07-14 22:53:41 | training             | INFO     | Initialising recommendation engines...
+2026-07-14 22:53:41 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-15 09:06:23 | training             | INFO     | Loading model artifacts from: models
+2026-07-15 09:06:23 | training             | INFO     | Artifacts loaded in 0.38s
+2026-07-15 09:06:23 | training             | INFO     | Initialising recommendation engines...
+2026-07-15 09:06:24 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-16 14:53:24 | training             | INFO     | Loading model artifacts from: models
+2026-07-16 14:53:24 | training             | INFO     | Artifacts loaded in 0.44s
+2026-07-16 14:53:24 | training             | INFO     | Initialising recommendation engines...
+2026-07-16 14:53:25 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-20 22:07:40 | training             | INFO     | Loading model artifacts from: models
+2026-07-20 22:07:40 | training             | INFO     | Artifacts loaded in 0.30s
+2026-07-20 22:07:40 | training             | INFO     | Initialising recommendation engines...
+2026-07-20 22:07:41 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 13:03:49 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 13:03:49 | training             | INFO     | Artifacts loaded in 0.38s
+2026-07-21 13:03:49 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 13:03:50 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 21:25:14 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 21:25:15 | training             | INFO     | Artifacts loaded in 0.28s
+2026-07-21 21:25:15 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 21:25:15 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 21:58:23 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 21:58:23 | training             | INFO     | Artifacts loaded in 0.17s
+2026-07-21 21:58:23 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 21:58:24 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 21:58:24 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:02:05 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:02:05 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 22:02:05 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:02:06 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:02:06 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:05:32 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:05:32 | training             | INFO     | Artifacts loaded in 0.24s
+2026-07-21 22:05:32 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:05:32 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:05:33 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:24:03 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:24:03 | training             | INFO     | Artifacts loaded in 0.18s
+2026-07-21 22:24:03 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:24:04 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:24:04 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:24:04 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT', 'B0789LZTCJ'], k=8)
+2026-07-21 22:25:00 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT', 'B0789LZTCJ'], k=8)
+2026-07-21 22:28:21 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 22:30:42 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:30:42 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 22:30:42 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:30:43 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:30:43 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:33:24 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:33:24 | training             | INFO     | Artifacts loaded in 0.17s
+2026-07-21 22:33:24 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:33:25 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:33:25 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:33:25 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 22:35:07 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 22:36:54 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 22:39:17 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:39:17 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 22:39:17 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:39:17 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:39:17 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:41:37 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:41:37 | training             | INFO     | Artifacts loaded in 0.18s
+2026-07-21 22:41:37 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:41:37 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:41:37 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:41:37 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 22:50:43 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 22:50:44 | training             | INFO     | Artifacts loaded in 0.20s
+2026-07-21 22:50:44 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 22:50:44 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 22:50:44 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 22:50:44 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 23:00:03 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 23:00:03 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 23:00:03 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 23:00:04 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 23:00:04 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 23:00:04 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 23:00:55 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 23:01:53 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 23:01:53 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 23:01:53 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 23:01:54 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 23:01:54 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 23:01:54 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], k=8)
+2026-07-21 23:03:07 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 23:03:07 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 23:03:07 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 23:03:07 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 23:03:07 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 23:03:07 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1'], k=8)
+2026-07-21 23:03:21 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1'], k=8)
+2026-07-21 23:03:40 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1'], k=8)
+2026-07-21 23:05:19 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1'], k=8)
+2026-07-21 23:13:54 | training             | INFO     | Loading model artifacts from: models
+2026-07-21 23:13:54 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-21 23:13:54 | training             | INFO     | Initialising recommendation engines...
+2026-07-21 23:13:55 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-21 23:13:55 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-21 23:13:55 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1'], k=8)
+2026-07-21 23:18:25 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL'], k=8)
+2026-07-22 20:08:20 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 20:08:20 | training             | INFO     | Artifacts loaded in 0.28s
+2026-07-22 20:08:20 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 20:08:20 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 20:08:21 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 20:08:21 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL'], k=8)
+2026-07-22 20:23:32 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 20:23:32 | training             | INFO     | Artifacts loaded in 0.13s
+2026-07-22 20:23:32 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 20:23:32 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 20:23:32 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 20:28:09 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 20:28:09 | training             | INFO     | Artifacts loaded in 0.16s
+2026-07-22 20:28:09 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 20:28:10 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 20:28:10 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 20:28:10 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL', 'B0B997FBZT', 'B00EDJJ7FS', 'B08BJN4MP3', 'B09XXZXQC1', 'B096MSW6CT'], interactions=0, k=8)
+2026-07-22 20:30:17 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 20:30:17 | training             | INFO     | Artifacts loaded in 0.15s
+2026-07-22 20:30:17 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 20:30:18 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 20:30:18 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 20:30:18 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN', 'B0B9959XF3', 'B0BC9BW512', 'B0B2RBP83P', 'B09PTT8DZF', 'B08LW31NQ6', 'B09P22HXH6', 'B0B1YY6JJL'], interactions=15, k=8)
+2026-07-22 20:33:15 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN'], interactions=15, k=8)
+2026-07-22 20:33:21 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H', 'B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN'], interactions=15, k=8)
+2026-07-22 20:38:26 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H'], interactions=15, k=8)
+2026-07-22 20:43:36 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H'], interactions=15, k=8)
+2026-07-22 20:46:44 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN'], interactions=0, k=8)
+2026-07-22 20:48:20 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 20:48:20 | training             | INFO     | Artifacts loaded in 0.18s
+2026-07-22 20:48:20 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 20:48:21 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 20:48:21 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 20:48:21 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI', 'B07KSMBL2H'], interactions=15, k=8)
+2026-07-22 20:50:10 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN'], interactions=0, k=8)
+2026-07-22 20:50:31 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B', 'B00PVT30YI'], interactions=15, k=8)
+2026-07-22 20:51:39 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08TGG316Z', 'B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B'], interactions=15, k=8)
+2026-07-22 20:55:59 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08TGG316Z', 'B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B'], interactions=15, k=8)
+2026-07-22 20:59:22 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B0B4HJNPV4', 'B0B1YZX72F', 'B08L879JSN'], interactions=0, k=8)
+2026-07-22 20:59:46 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B08TGG316Z', 'B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W', 'B0B4PPD89B'], interactions=15, k=8)
+2026-07-22 21:00:15 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B09MQSCJQ1', 'B08TGG316Z', 'B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W'], interactions=15, k=8)
+2026-07-22 21:02:56 | training             | INFO     | Loading model artifacts from: models
+2026-07-22 21:02:57 | training             | INFO     | Artifacts loaded in 0.17s
+2026-07-22 21:02:57 | training             | INFO     | Initialising recommendation engines...
+2026-07-22 21:02:57 | training             | INFO     | PersonalizedEngine: initialized.
+2026-07-22 21:02:57 | training             | INFO     | RecommendationEngine ready: 1351 products, 8 engines, vocab=5,000
+2026-07-22 21:02:57 | training             | INFO     | [RecommendationEngine] recommend_personalized(history=['B09MQSCJQ1', 'B08TGG316Z', 'B08WRBG3XW', 'B08HVL8QN3', 'B07RD611Z8', 'B08HVJCW95', 'B07Z51CGGH', 'B00V9NHDI4', 'B09FZ89DK6', 'B07H3N8RJH', 'B072J83V9W', 'B01L6MT7E0', 'B0811VCGL5', 'B00HVXS7WC', 'B09CTWFV5W'], interactions=15, k=8)
