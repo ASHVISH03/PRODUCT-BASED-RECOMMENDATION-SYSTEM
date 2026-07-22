@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from app.database import get_db
+from app.schemas.recommendations import PersonalizedRecommendationRequest
 from app.services.product_service import ProductService
 from app.services.recommendation_service import RecommendationService
 from app.services.search_service import SearchService
@@ -118,6 +119,44 @@ def get_personalized_recommendations(
         "status": "success",
         "mode": result["mode"],
         "history_used": result["history_used"],
+        "count": result["count"],
+        "data": result["data"],
+    }
+
+@router.post("/recommendations/personalized", tags=["Recommendations"])
+def post_personalized_recommendations(
+    payload: PersonalizedRecommendationRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    Generate multi-signal personalized AI Picks from structured user interaction events.
+
+    - Supports event types: view (1.0), repeat_view (1.5), wishlist (2.0), cart (3.0), purchase (5.0).
+    - Recency decay factor: 0.85 per position.
+    - MMR diversity reranking: lambda = 0.60.
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    svc = RecommendationService(db)
+    try:
+        raw_interactions = [item.model_dump() for item in payload.interactions]
+        result = svc.get_personalized_recommendations_multi_signal(
+            interactions=raw_interactions,
+            history_ids=payload.history,
+            k=payload.k,
+            session_id=payload.session_id,
+        )
+    except Exception as e:
+        import traceback
+        tb_str = traceback.format_exc()
+        logger.error(f"[API Route POST /recommendations/personalized] ERROR: {str(e)}\n{tb_str}")
+        raise HTTPException(status_code=500, detail=f"Multi-signal personalization error: {str(e)}\n{tb_str}")
+
+    return {
+        "status": "success",
+        "mode": result["mode"],
+        "history_used": result["history_used"],
+        "dominant_signal": result.get("dominant_signal"),
         "count": result["count"],
         "data": result["data"],
     }

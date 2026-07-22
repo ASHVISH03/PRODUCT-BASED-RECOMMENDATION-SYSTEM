@@ -84,43 +84,92 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (el) el.innerHTML = grid.data.map(p => UI.renderProductCard(p, grid.ctx)).join('');
             });
 
+            // ── MULTI-SIGNAL INTERACTION STORAGE MANAGER ──────────────────────
+            window.Interactions = {
+                get() {
+                    try {
+                        return JSON.parse(localStorage.getItem('amazclone_interactions') || '[]');
+                    } catch (e) {
+                        return [];
+                    }
+                },
+
+                add(productId, eventType = 'view', quantity = 1) {
+                    if (!productId || typeof productId !== 'string') return;
+                    let interactions = this.get();
+                    const now = Date.now();
+                    const cleanType = String(eventType).trim().lowerCase ? eventType.toLowerCase() : 'view';
+
+                    // Rapid repeat view check (within 60 seconds)
+                    if (cleanType === 'view' && interactions.length > 0) {
+                        const last = interactions[0];
+                        if (last.product_id === productId && (now - (last.timestamp || 0)) < 60000) {
+                            last.event_type = 'repeat_view';
+                            last.timestamp = now;
+                            localStorage.setItem('amazclone_interactions', JSON.stringify(interactions));
+                            return;
+                        }
+                    }
+
+                    // Prepend new interaction event (newest first)
+                    interactions.unshift({
+                        product_id: productId,
+                        event_type: cleanType,
+                        timestamp: now,
+                        quantity: Number(quantity) || 1
+                    });
+
+                    // Cap to 50 items
+                    if (interactions.length > 50) interactions = interactions.slice(0, 50);
+
+                    localStorage.setItem('amazclone_interactions', JSON.stringify(interactions));
+                    console.info(`[Interactions] Recorded event '${cleanType}' for product ${productId}`);
+                },
+
+                removeWishlist(productId) {
+                    let interactions = this.get();
+                    interactions = interactions.filter(item => !(item.product_id === productId && item.event_type === 'wishlist'));
+                    localStorage.setItem('amazclone_interactions', JSON.stringify(interactions));
+                }
+            };
+
             // ── PERSONALIZED AI PICKS ─────────────────────────────────────────
-            // Reads the user's browsing history from localStorage, sends it to the
-            // backend personalization endpoint, and renders the results as AI Picks.
-            // Cold start (no history) → backend returns trending products instead.
             const loadPersonalizedPicks = async () => {
                 const aiPicksGrid = document.getElementById('ai-picks-grid');
                 const aiPicksSubtitle = document.getElementById('ai-picks-subtitle');
                 if (!aiPicksGrid) return;
 
-                // 1. Audit localStorage history
+                // 1. Audit localStorage history & interactions
                 const rawHistory = localStorage.getItem('amazclone_recently_viewed');
                 let recentIds = [];
                 try {
                     recentIds = JSON.parse(rawHistory || '[]');
-                } catch (e) {
-                    console.error('[AI Picks Audit] Failed to parse amazclone_recently_viewed:', e);
-                }
+                } catch (e) {}
 
-                // Filter to valid canonical ID strings
                 recentIds = recentIds.filter(id => typeof id === 'string' && id.trim().length > 0);
+                const interactions = window.Interactions.get();
 
-                console.info(`[AI Picks Audit] Raw localStorage amazclone_recently_viewed:`, rawHistory);
-                console.info(`[AI Picks Audit] Parsed canonical history IDs (${recentIds.length}):`, recentIds);
+                console.info(`[AI Picks Audit] Raw amazclone_recently_viewed:`, recentIds);
+                console.info(`[AI Picks Audit] Raw amazclone_interactions (${interactions.length}):`, interactions);
 
                 // Dynamic Subtitle update before request
-                if (recentIds.length > 0) {
+                if (interactions.length > 0 || recentIds.length > 0) {
                     if (aiPicksSubtitle) aiPicksSubtitle.innerText = 'Personalized from your recent activity';
                 } else {
                     if (aiPicksSubtitle) aiPicksSubtitle.innerText = 'Trending recommendations for you';
                 }
 
-                // Invalidate frontend cache
                 if (api.clearRecommendationCache) api.clearRecommendationCache();
 
                 try {
-                    const res = await api.getPersonalizedRecommendations(recentIds, 8);
+                    // Call POST multi-signal personalized endpoint
+                    let res = await api.postMultiSignalPersonalizedRecommendations(interactions, recentIds, 8);
                     
+                    if (res.error || !res.data || res.data.length === 0) {
+                        console.warn('[AI Picks Fallback] POST request returned error/empty, trying GET fallback...');
+                        res = await api.getPersonalizedRecommendations(recentIds, 8);
+                    }
+
                     if (res.error || !res.data || res.data.length === 0) {
                         console.error('[AI Picks ERROR] Personalized API request failed or returned empty:', res);
                         aiPicksGrid.innerHTML = `
@@ -133,16 +182,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                         return;
                     }
 
-                    // Update Subtitle based on backend mode
-                    if (res.mode === 'personalized' && aiPicksSubtitle) {
-                        aiPicksSubtitle.innerText = 'Personalized from your recent activity';
-                    } else if (res.mode === 'cold_start' && aiPicksSubtitle) {
-                        aiPicksSubtitle.innerText = 'Trending recommendations for you';
+                    // Update Subtitle based on dominant signal
+                    if (aiPicksSubtitle) {
+                        if (res.dominant_signal === 'wishlist') {
+                            aiPicksSubtitle.innerText = 'Personalized from your wishlist & browsing activity';
+                        } else if (res.dominant_signal === 'cart') {
+                            aiPicksSubtitle.innerText = 'Personalized from your cart & browsing activity';
+                        } else if (res.dominant_signal === 'purchase') {
+                            aiPicksSubtitle.innerText = 'Personalized from your purchases & browsing activity';
+                        } else if (res.mode === 'personalized') {
+                            aiPicksSubtitle.innerText = 'Personalized from your recent activity';
+                        } else {
+                            aiPicksSubtitle.innerText = 'Trending recommendations for you';
+                        }
                     }
 
                     const picks = res.data;
                     console.info(
-                        `[AI Picks Success] Mode: ${res.mode} | History Used: [${(res.history_used || []).join(', ')}] | ` +
+                        `[AI Picks Success] Mode: ${res.mode} | Dominant Signal: ${res.dominant_signal || 'N/A'} | ` +
                         `Rendered IDs: [${picks.map(p => p.product_id).join(', ')}]`
                     );
 

@@ -137,43 +137,72 @@ class PersonalizedEngine(BaseEngine):
         self,
         history_ids: List[str],
         interaction_types: Optional[Dict[str, str]] = None,
+        structured_interactions: Optional[List[Dict[str, Any]]] = None,
     ) -> Optional[np.ndarray]:
         """
         Construct a recency-decayed, interaction-weighted TF-IDF user profile.
 
         Args:
             history_ids:        Product IDs in viewing order, newest-first.
-            interaction_types:  Optional dict mapping product_id → interaction type.
-                                e.g. {"B01...": "view", "B02...": "wishlist"}
-                                Defaults to "view" for all items if not supplied.
+            interaction_types:  Optional dict mapping product_id → interaction type string.
+            structured_interactions: Optional list of interaction dicts:
+                                     [{"product_id": "...", "event_type": "cart", "quantity": 1}, ...]
 
         Returns:
             User profile vector of shape (1, vocab_size), or None if no valid
             product texts could be retrieved.
         """
-        if not history_ids:
+        if not history_ids and not structured_interactions:
             return None
 
-        interaction_types = interaction_types or {}
+        # Build normalized interaction sequence: List of (product_id, event_type)
+        items_to_process: List[Tuple[str, str]] = []
+
+        if structured_interactions:
+            # Deduplicate structured interactions preserving latest order
+            seen_pids = set()
+            for item in structured_interactions:
+                if isinstance(item, dict):
+                    pid = str(item.get("product_id", "")).strip()
+                    etype = str(item.get("event_type", "view")).strip().lower()
+                else:
+                    pid = getattr(item, "product_id", str(item)).strip()
+                    etype = getattr(item, "event_type", "view").strip().lower()
+                
+                if pid and pid not in seen_pids:
+                    seen_pids.add(pid)
+                    items_to_process.append((pid, etype))
+        else:
+            interaction_types = interaction_types or {}
+            seen_pids = set()
+            for pid in history_ids:
+                pid_str = str(pid).strip()
+                if pid_str and pid_str not in seen_pids:
+                    seen_pids.add(pid_str)
+                    itype = interaction_types.get(pid_str, "view")
+                    items_to_process.append((pid_str, itype))
+
+        if not items_to_process:
+            return None
+
         profile_vectors: List[np.ndarray] = []
         total_weight: float = 0.0
 
         logger.info(
-            f"[PersonalizedEngine] Building user profile from "
-            f"{len(history_ids)} history items: {history_ids}"
+            f"[PersonalizedEngine] Building multi-signal user profile from "
+            f"{len(items_to_process)} interaction items: {items_to_process}"
         )
 
-        for position, pid in enumerate(history_ids):
+        for position, (pid, itype) in enumerate(items_to_process):
             text = self._get_product_text(pid)
             if text is None:
                 logger.warning(f"  [profile] Skipping unknown product: {pid}")
                 continue
 
             # Determine base interaction weight
-            itype = interaction_types.get(pid, "view")
             base_weight = self.INTERACTION_WEIGHTS.get(itype, 1.0)
 
-            # Apply recency decay: newer items (smaller position) get higher weight
+            # Apply recency decay: newer items (smaller position index) get higher weight
             decay = self.DECAY_FACTOR ** position
             item_weight = base_weight * decay
 
@@ -188,7 +217,7 @@ class PersonalizedEngine(BaseEngine):
                 f"decay={decay:.4f} weight={item_weight:.4f}"
             )
 
-        if not profile_vectors:
+        if not profile_vectors or total_weight <= 0:
             logger.warning("[PersonalizedEngine] No valid profile vectors built.")
             return None
 
@@ -303,83 +332,88 @@ class PersonalizedEngine(BaseEngine):
         self,
         history_ids: List[str],
         interaction_types: Optional[Dict[str, str]] = None,
+        structured_interactions: Optional[List[Dict[str, Any]]] = None,
         top_k: int = 8,
         candidate_pool: int = 50,
     ) -> List[RecommendationResult]:
         """
-        Full personalization pipeline:
-            1. Build TF-IDF user profile vector.
-            2. Score all catalog products via cosine similarity.
-            3. Exclude already-viewed products.
-            4. MMR rerank top candidate_pool items.
-            5. Return top_k enriched RecommendationResult objects.
-
-        Args:
-            history_ids:       Product IDs in viewing order, newest-first.
-            interaction_types: Optional interaction type per product.
-            top_k:             Final number of recommendations.
-            candidate_pool:    Pool size before MMR reranking (should be >> top_k).
-
-        Returns:
-            List of RecommendationResult with genuine reasons derived from signals.
+        Generate multi-signal personalized recommendations for a session.
         """
         try:
-            if not history_ids:
-                logger.info("[PersonalizedEngine] Empty history — caller should route to cold start.")
-                return []
+            # Determine dominant signal type across interactions
+            dominant_signal = "view"
+            if structured_interactions:
+                signal_counts: Dict[str, float] = {}
+                for item in structured_interactions:
+                    etype = item.get("event_type", "view") if isinstance(item, dict) else getattr(item, "event_type", "view")
+                    w = self.INTERACTION_WEIGHTS.get(etype, 1.0)
+                    signal_counts[etype] = signal_counts.get(etype, 0.0) + w
+                if signal_counts:
+                    dominant_signal = max(signal_counts, key=lambda s: signal_counts[s])
+            elif interaction_types:
+                signal_counts: Dict[str, float] = {}
+                for itype in interaction_types.values():
+                    w = self.INTERACTION_WEIGHTS.get(itype, 1.0)
+                    signal_counts[itype] = signal_counts.get(itype, 0.0) + w
+                if signal_counts:
+                    dominant_signal = max(signal_counts, key=lambda s: signal_counts[s])
 
             # Step 1: Build user profile
-            user_profile = self.build_user_profile(history_ids, interaction_types)
+            user_profile = self.build_user_profile(
+                history_ids=history_ids,
+                interaction_types=interaction_types,
+                structured_interactions=structured_interactions,
+            )
             if user_profile is None:
                 logger.warning("[PersonalizedEngine] Profile construction failed — returning empty.")
                 return []
 
             # Step 2: Cosine similarity against all catalog products
-            # _tfidf_matrix is sparse (n × vocab), user_profile is dense (1 × vocab)
             all_scores = cosine_similarity(user_profile, self._tfidf_matrix)  # (1 × n)
             all_scores = all_scores.flatten()  # (n,)
 
-            logger.info(
-                f"[PersonalizedEngine] Score distribution: "
-                f"max={all_scores.max():.4f} mean={all_scores.mean():.4f} "
-                f"nonzero={np.count_nonzero(all_scores > 0)}"
-            )
+            # Zero out items in history to prevent self-recommendation
+            history_set = set(history_ids or [])
+            if structured_interactions:
+                for item in structured_interactions:
+                    pid = item.get("product_id") if isinstance(item, dict) else getattr(item, "product_id", None)
+                    if pid:
+                        history_set.add(str(pid))
 
-            # Step 3: Exclude history items
-            history_set = set(history_ids)
-            excluded_idxs = {
-                self._product_index[pid]
-                for pid in history_set
-                if pid in self._product_index
-            }
-            for idx in excluded_idxs:
-                all_scores[idx] = 0.0
+            for pid in history_set:
+                idx = self._product_index.get(pid)
+                if idx is not None:
+                    all_scores[idx] = 0.0
 
-            # Step 4: Take top candidate_pool items by raw cosine score
+            # Step 3: Select top candidate pool
+            candidate_pool = max(candidate_pool, top_k * 4)
             top_idxs = np.argsort(all_scores)[::-1][:candidate_pool]
+
             candidate_ids: List[str] = []
             candidate_scores: Dict[str, float] = {}
             for idx in top_idxs:
                 score = float(all_scores[idx])
                 if score <= 0.0:
-                    break
-                pid = str(self._df.iloc[idx]["product_id"])
+                    continue
+                pid = self._df.iloc[idx]["product_id"]
                 candidate_ids.append(pid)
                 candidate_scores[pid] = score
 
-            logger.info(
-                f"[PersonalizedEngine] Candidate pool: "
-                f"{len(candidate_ids)} products (top score={max(candidate_scores.values(), default=0):.4f})"
+            if not candidate_ids:
+                logger.warning("[PersonalizedEngine] No candidate products with score > 0.")
+                return []
+
+            # Step 4: MMR Reranking
+            reranked = self.mmr_rerank(
+                candidate_ids=candidate_ids,
+                candidate_scores=candidate_scores,
+                top_k=top_k,
             )
 
-            # Step 5: MMR rerank
-            reranked = self.mmr_rerank(candidate_ids, candidate_scores, top_k=top_k)
-
-            # Step 6: Build RecommendationResult objects
+            # Step 5: Format RecommendationResult objects
             results: List[RecommendationResult] = []
-            # Derive dominant interests from history for reason generation
-            interest_categories = self._extract_interests(history_ids)
-            logger.info(f"[PersonalizedEngine] Interest categories: {interest_categories}")
+            all_pids_in_history = list(history_set)
+            interest_categories = self._extract_interests(all_pids_in_history)
 
             for rank, (pid, mmr_score) in enumerate(reranked, start=1):
                 idx = self._product_index.get(pid)
@@ -388,7 +422,9 @@ class PersonalizedEngine(BaseEngine):
                 row = self._df.iloc[idx]
 
                 raw_relevance = float(candidate_scores.get(pid, 0.0))
-                reason, tags = self._build_personalized_reason(row, interest_categories, raw_relevance)
+                reason, tags = self._build_personalized_reason(
+                    row, interest_categories, raw_relevance, dominant_signal
+                )
 
                 result = RecommendationResult(
                     product_id=str(pid),
@@ -402,12 +438,6 @@ class PersonalizedEngine(BaseEngine):
                 )
                 _enrich_result(result, row)
                 results.append(result)
-
-                logger.info(
-                    f"  [result] rank={rank} pid={pid} "
-                    f"relevance={raw_relevance:.4f} mmr={mmr_score:.4f} "
-                    f"reason='{reason}'"
-                )
 
             return results
 
@@ -435,17 +465,37 @@ class PersonalizedEngine(BaseEngine):
         candidate_row: pd.Series,
         interest_categories: List[str],
         score: float,
+        dominant_signal: str = "view",
     ) -> Tuple[str, List[str]]:
         """
         Build a meaningful recommendation reason from actual signals.
-        Avoids the generic 'Based on your recently viewed items' for every result.
+        Adapts reason dynamically based on interaction signal type (wishlist, cart, purchase, view).
         """
         tags: List[str] = ["Personalized"]
         cat_l1 = str(candidate_row.get("category_l1", "") or "")
         cat_l2 = str(candidate_row.get("category_l2", "") or "")
+        category_name = cat_l2 or cat_l1 or "your interests"
 
-        # Check if candidate matches a dominant interest category
-        if cat_l2 and cat_l2 in interest_categories:
+        # Multi-signal explanation mapping
+        if dominant_signal == "wishlist":
+            tags.append("Wishlist Affinity")
+            if category_name in interest_categories:
+                reason = f"Based on products in your wishlist ({category_name})"
+            else:
+                reason = "Recommended based on your wishlist items"
+        elif dominant_signal == "cart":
+            tags.append("Cart Affinity")
+            if category_name in interest_categories:
+                reason = f"Related to items in your cart ({category_name})"
+            else:
+                reason = "Complements items in your shopping cart"
+        elif dominant_signal == "purchase":
+            tags.append("Purchase Affinity")
+            if category_name in interest_categories:
+                reason = f"Inspired by your recent purchase ({category_name})"
+            else:
+                reason = "Recommended based on your recent purchase history"
+        elif cat_l2 and cat_l2 in interest_categories:
             reason = f"Matches your recent interest in {cat_l2}"
             tags.append("Category Match")
         elif cat_l1 and cat_l1 in interest_categories:

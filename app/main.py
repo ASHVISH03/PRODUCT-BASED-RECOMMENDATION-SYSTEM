@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.router import router as api_router
 
-# v1.8.0 — Complete import audit + ORM brand attribute fix
+# v1.9.1 — Fixed recommend_personalized interface signature contract
 app = FastAPI(
     title="Product Recommendation API",
     description="Backend API for the MLOps End-to-End Product Recommendation System.",
-    version="1.8.0",
+    version="1.9.1",
 )
 
 # Configure CORS for the frontend (Phase 5)
@@ -26,5 +26,5 @@ def root():
     return {
         "message": "Welcome to the Product Recommendation API",
         "docs": "/docs",
-        "version": "1.8.0",
+        "version": "1.9.1",
     }

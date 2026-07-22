@@ -141,8 +141,8 @@ function renderProductPage(product) {
             <button class="btn btn-outline" style="width:100%" onclick="window.addToCart('${product.product_id}'); window.location.href='checkout.html'">
                 <i class="ph ph-lightning"></i> Buy Now
             </button>
-            <button class="btn btn-ghost" style="width:100%; border:1px solid var(--border-subtle)" onclick="window.toggleWishlist('${product.product_id}', this)">
-                <i class="${window.wishlist && window.wishlist.includes(product.product_id) ? 'ph-fill' : 'ph'} ph-heart"></i> Add to Wishlist
+            <button class="btn btn-ghost" id="wishlist-btn-${product.product_id}" style="width:100%; border:1px solid var(--border-subtle)" onclick="window.toggleWishlist('${product.product_id}')">
+                <i class="${window.wishlist && window.wishlist.includes(product.product_id) ? 'ph-fill' : 'ph'} ph-heart" style="${window.wishlist && window.wishlist.includes(product.product_id) ? 'color:var(--brand-primary)' : ''}"></i> ${window.wishlist && window.wishlist.includes(product.product_id) ? 'Saved to Wishlist' : 'Add to Wishlist'}
             </button>
         </div>
     `;
@@ -249,6 +249,11 @@ function renderProductPage(product) {
     recent.unshift(product.product_id);
     if (recent.length > 15) recent = recent.slice(0, 15);
     localStorage.setItem('amazclone_recently_viewed', JSON.stringify(recent));
+
+    // Record multi-signal view interaction event
+    if (window.Interactions && window.Interactions.add) {
+        window.Interactions.add(product.product_id, 'view');
+    }
 
     // Bug 1: Trigger IntersectionObserver so elements fade in!
     if (window.UI && window.UI.initAnimations) {

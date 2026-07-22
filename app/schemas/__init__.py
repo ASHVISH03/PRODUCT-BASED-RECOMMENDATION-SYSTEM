@@ -1,1 +1,11 @@
-"""Schemas package — Pydantic request/response models."""
+from app.schemas.recommendations import (
+    InteractionItem,
+    PersonalizedRecommendationRequest,
+    PersonalizedRecommendationResponse,
+)
+
+__all__ = [
+    "InteractionItem",
+    "PersonalizedRecommendationRequest",
+    "PersonalizedRecommendationResponse",
+]

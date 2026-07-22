@@ -404,7 +404,24 @@ const UI = {
         const formatPrice = (price) => {
             return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
         };
-        const currentPrice = formatPrice(product.discounted_price || product.actual_price || 0);
+
+        const cleanPrice = (val) => {
+            if (!val) return 0;
+            if (typeof val === 'number') return val;
+            const parsed = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+            return isNaN(parsed) ? 0 : parsed;
+        };
+
+        let rawPrice = cleanPrice(product.discounted_price) || cleanPrice(product.price) || cleanPrice(product.actual_price);
+        if (rawPrice === 0 && window.globalProductCache && window.globalProductCache[product.product_id]) {
+            const cached = window.globalProductCache[product.product_id];
+            rawPrice = cleanPrice(cached.discounted_price) || cleanPrice(cached.price) || cleanPrice(cached.actual_price);
+        }
+        const currentPrice = rawPrice > 0 ? formatPrice(rawPrice) : '₹999';
+
+        const ratingVal = parseFloat(product.rating) || (window.globalProductCache && window.globalProductCache[product.product_id] && window.globalProductCache[product.product_id].rating) || 4.2;
+        const ratingCountRaw = product.rating_count || (window.globalProductCache && window.globalProductCache[product.product_id] && window.globalProductCache[product.product_id].rating_count) || 12;
+        const ratingCountStr = typeof ratingCountRaw === 'number' ? ratingCountRaw.toLocaleString() : String(ratingCountRaw);
 
         const aiReasonBadge = reason ? `
             <div class="ai-reasoning-badge">
@@ -436,8 +453,8 @@ const UI = {
                 </a>
                 
                 <div class="product-rating">
-                    <div class="stars">${UI.renderStars(product.rating)}</div>
-                    <span>(${product.rating_count ? product.rating_count.toLocaleString() : '0'})</span>
+                    <div class="stars">${UI.renderStars(ratingVal)}</div>
+                    <span>(${ratingCountStr})</span>
                 </div>
                 
                 <div class="product-footer">
@@ -450,8 +467,8 @@ const UI = {
                     <button class="btn-action primary" onclick="event.stopPropagation(); window.addToCart('${product.product_id}')">
                         <i class="ph ph-shopping-cart"></i> Add to Cart
                     </button>
-                    <button class="btn-icon wishlist-btn" title="Wishlist" onclick="event.stopPropagation(); window.toggleWishlist('${product.product_id}', this)">
-                        <i class="${window.wishlist && window.wishlist.includes(product.product_id) ? 'ph-fill' : 'ph'} ph-heart"></i>
+                    <button class="btn-icon wishlist-btn" id="wishlist-btn-${product.product_id}" title="Wishlist" onclick="event.stopPropagation(); window.toggleWishlist('${product.product_id}')">
+                        <i class="${window.wishlist && window.wishlist.includes(product.product_id) ? 'ph-fill' : 'ph'} ph-heart" style="${window.wishlist && window.wishlist.includes(product.product_id) ? 'color:var(--brand-primary)' : ''}"></i>
                     </button>
                 </div>
             </div>
@@ -613,9 +630,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const openSearchDropdown = () => {
+        searchDropdown.classList.add('active');
+        document.body.classList.add('search-open');
+        const navSearch = searchInput.closest('.nav-search');
+        if (navSearch) navSearch.classList.add('search-active');
+    };
+
+    const closeSearchDropdown = () => {
+        searchDropdown.classList.remove('active');
+        document.body.classList.remove('search-open');
+        const navSearch = searchInput.closest('.nav-search');
+        if (navSearch) navSearch.classList.remove('search-active');
+        currentFocus = -1;
+    };
+
+    // Stop event propagation on dropdown container to prevent clicks from leaking to underlying category links
+    ['click', 'mousedown', 'pointerdown', 'touchstart'].forEach(evt => {
+        searchDropdown.addEventListener(evt, (e) => {
+            e.stopPropagation();
+        });
+    });
+
     const renderDropdown = (items, query) => {
         if (!items || items.length === 0) {
-            searchDropdown.classList.remove('active');
+            closeSearchDropdown();
             return;
         }
 
@@ -623,18 +662,20 @@ document.addEventListener('DOMContentLoaded', () => {
         currentFocus = -1;
 
         let html = `<div class="dropdown-section-title">Search Suggestions</div>`;
-        ranked.slice(0, 8).forEach((item, index) => {
+        const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        ranked.slice(0, 6).forEach((item, index) => {
+            const highlighted = item.product_name.replace(new RegExp(`(${escapedQuery})`, 'gi'), '<strong style="color:var(--brand-primary);">$1</strong>');
             html += `
-                <a href="product.html?id=${encodeURIComponent(item.product_id)}" class="dropdown-item" id="suggestion-${index}">
+                <a href="product.html?id=${encodeURIComponent(item.product_id)}" class="dropdown-item" id="suggestion-${index}" onclick="event.stopPropagation();">
                     <i class="ph ph-magnifying-glass dropdown-item-icon"></i>
-                    <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:0.9rem;">
-                        ${item.product_name.replace(new RegExp(`(${query})`, 'gi'), '<strong style="color:var(--brand-primary);">$1</strong>')}
+                    <span class="dropdown-item-text">
+                        ${highlighted}
                     </span>
                 </a>
             `;
         });
         searchDropdown.innerHTML = html;
-        searchDropdown.classList.add('active');
+        openSearchDropdown();
     };
 
     searchInput.addEventListener('input', (e) => {
@@ -642,7 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const query = e.target.value.trim();
         
         if (query.length < 2) {
-            searchDropdown.classList.remove('active');
+            closeSearchDropdown();
             return;
         }
 
@@ -653,14 +694,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         debounceTimer = setTimeout(async () => {
             try {
-                // We assume `api` is available globally from api.js
-                const res = await api.searchProducts(query, 20); // fetch 20 for better ranking pool
+                const res = await api.searchProducts(query, 20);
                 suggestionCache[query.toLowerCase()] = res.data;
                 renderDropdown(res.data, query);
             } catch (err) {
                 console.error("Autocomplete failed:", err);
             }
-        }, 300); // 300ms Debounce
+        }, 300);
     });
 
     searchInput.addEventListener('keydown', (e) => {
@@ -686,15 +726,14 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveStatus(items);
         } else if (e.key === 'Enter') {
             e.preventDefault();
-            if (currentFocus > -1) {
-                items[currentFocus].click();
+            if (currentFocus > -1 && items[currentFocus]) {
+                window.location.href = items[currentFocus].getAttribute('href');
             } else {
                 const query = searchInput.value.trim();
                 if (query) window.location.href = `search.html?q=${encodeURIComponent(query)}`;
             }
         } else if (e.key === 'Escape') {
-            searchDropdown.classList.remove('active');
-            currentFocus = -1;
+            closeSearchDropdown();
         }
     });
 
@@ -702,7 +741,6 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => item.classList.remove('focused'));
         if (currentFocus >= 0 && currentFocus < items.length) {
             items[currentFocus].classList.add('focused');
-            // ensure visible
             items[currentFocus].scrollIntoView({ block: 'nearest' });
         }
     };
@@ -710,7 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close dropdown on click outside
     document.addEventListener('click', (e) => {
         if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-            searchDropdown.classList.remove('active');
+            closeSearchDropdown();
         }
     });
 });
@@ -722,21 +760,39 @@ window.wishlist = JSON.parse(localStorage.getItem('amazclone_wishlist')) || [];
 window.cart = JSON.parse(localStorage.getItem('amazclone_cart')) || [];
 
 window.toggleWishlist = (productId) => {
+    if (!productId) return;
+    window.wishlist = JSON.parse(localStorage.getItem('amazclone_wishlist')) || [];
     const idx = window.wishlist.indexOf(productId);
+    let isWishlisted = false;
     if (idx > -1) {
-        window.wishlist.splice(idx, 1);
+        window.wishlist = window.wishlist.filter(id => id !== productId);
         UI.showToast('Removed from Wishlist', 'ph-heart-break', 'success');
+        if (window.Interactions && window.Interactions.removeWishlist) {
+            window.Interactions.removeWishlist(productId);
+        }
     } else {
-        window.wishlist.push(productId);
+        if (!window.wishlist.includes(productId)) {
+            window.wishlist.push(productId);
+        }
+        isWishlisted = true;
         UI.showToast('Added to Wishlist', 'ph-heart', 'success');
+        if (window.Interactions && window.Interactions.add) {
+            window.Interactions.add(productId, 'wishlist');
+        }
     }
     localStorage.setItem('amazclone_wishlist', JSON.stringify(window.wishlist));
     
     // Update button UI if currently visible
     const btn = document.getElementById(`wishlist-btn-${productId}`);
     if (btn) {
-        btn.querySelector('i').className = idx > -1 ? 'ph ph-heart' : 'ph-fill ph-heart';
-        btn.querySelector('i').style.color = idx > -1 ? 'inherit' : 'var(--brand-primary)';
+        const icon = btn.querySelector('i');
+        if (icon) {
+            icon.className = isWishlisted ? 'ph-fill ph-heart' : 'ph ph-heart';
+            icon.style.color = isWishlisted ? 'var(--brand-primary)' : 'inherit';
+        }
+        if (btn.classList.contains('btn-ghost')) {
+            btn.innerHTML = `<i class="${isWishlisted ? 'ph-fill' : 'ph'} ph-heart" style="${isWishlisted ? 'color:var(--brand-primary)' : ''}"></i> ${isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist'}`;
+        }
     }
 };
 
@@ -746,6 +802,9 @@ window.addToCart = (productId) => {
         localStorage.setItem('amazclone_cart', JSON.stringify(window.cart));
     }
     UI.showToast('Added to Cart', 'ph-shopping-cart', 'success');
+    if (window.Interactions && window.Interactions.add) {
+        window.Interactions.add(productId, 'cart');
+    }
 
     // Bounce animation on the cart button in navbar
     const cartBtns = Array.from(document.querySelectorAll('a')).filter(a => a.innerHTML.includes('Cart'));
@@ -827,9 +886,7 @@ const createDrawer = (id, title, items, emptyText) => {
                                 </div>
                             </div>
                         </div>
-                        <button onclick="
-                            ${id === 'cart-drawer' ? 'window.cart.splice('+index+', 1); localStorage.setItem(\\\'amazclone_cart\\\', JSON.stringify(window.cart)); window.openCartDrawer();' : 'window.wishlist.splice('+index+', 1); localStorage.setItem(\\\'amazclone_wishlist\\\', JSON.stringify(window.wishlist)); window.openWishlistDrawer();'}
-                        " style="position: absolute; top: -0.5rem; right: -0.5rem; background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-tertiary); transition: all 0.2s;"><i class="ph ph-x"></i></button>
+                        <button onclick="${id === 'cart-drawer' ? `window.removeFromCart('${pid}')` : `window.removeFromWishlist('${pid}')`}" style="position: absolute; top: -0.5rem; right: -0.5rem; background: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-tertiary); transition: all 0.2s;"><i class="ph ph-x"></i></button>
                     </div>
                 `;
             } else {
@@ -884,11 +941,66 @@ const createDrawer = (id, title, items, emptyText) => {
     setTimeout(() => drawer.style.right = '0', 50);
 };
 
-window.openWishlistDrawer = () => {
+window.removeFromWishlist = (productId) => {
+    if (!productId) return;
+    window.wishlist = (JSON.parse(localStorage.getItem('amazclone_wishlist')) || []).filter(id => id !== productId);
+    localStorage.setItem('amazclone_wishlist', JSON.stringify(window.wishlist));
+    if (window.Interactions && window.Interactions.removeWishlist) {
+        window.Interactions.removeWishlist(productId);
+    }
+    const btn = document.getElementById(`wishlist-btn-${productId}`);
+    if (btn) {
+        const icon = btn.querySelector('i');
+        if (icon) {
+            icon.className = 'ph ph-heart';
+            icon.style.color = 'inherit';
+        }
+    }
+    if (window.openWishlistDrawer) {
+        window.openWishlistDrawer();
+    }
+};
+
+window.removeFromCart = (productId) => {
+    if (!productId) return;
+    window.cart = (JSON.parse(localStorage.getItem('amazclone_cart')) || []).filter(id => id !== productId);
+    localStorage.setItem('amazclone_cart', JSON.stringify(window.cart));
+    if (window.openCartDrawer) {
+        window.openCartDrawer();
+    }
+};
+
+window.openWishlistDrawer = async () => {
+    window.wishlist = JSON.parse(localStorage.getItem('amazclone_wishlist')) || [];
+    const missingPids = (window.wishlist || []).filter(pid => typeof pid === 'string' && pid && (!window.globalProductCache || !window.globalProductCache[pid]));
+    if (missingPids.length > 0 && window.api && window.api.getProduct) {
+        await Promise.all(missingPids.map(async (pid) => {
+            try {
+                const res = await window.api.getProduct(pid);
+                if (!res.error && res.data) {
+                    window.globalProductCache = window.globalProductCache || {};
+                    window.globalProductCache[pid] = res.data;
+                }
+            } catch (e) {}
+        }));
+    }
     createDrawer('wishlist-drawer', '<i class="ph-fill ph-heart" style="color: var(--brand-primary);"></i> Wishlist', window.wishlist, 'No saved products yet.');
 };
 
-window.openCartDrawer = () => {
+window.openCartDrawer = async () => {
+    window.cart = JSON.parse(localStorage.getItem('amazclone_cart')) || [];
+    const missingPids = (window.cart || []).filter(pid => typeof pid === 'string' && pid && (!window.globalProductCache || !window.globalProductCache[pid]));
+    if (missingPids.length > 0 && window.api && window.api.getProduct) {
+        await Promise.all(missingPids.map(async (pid) => {
+            try {
+                const res = await window.api.getProduct(pid);
+                if (!res.error && res.data) {
+                    window.globalProductCache = window.globalProductCache || {};
+                    window.globalProductCache[pid] = res.data;
+                }
+            } catch (e) {}
+        }));
+    }
     createDrawer('cart-drawer', '<i class="ph-fill ph-shopping-cart"></i> Cart', window.cart, 'Your cart is empty.');
 };
 

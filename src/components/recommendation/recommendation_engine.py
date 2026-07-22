@@ -477,6 +477,7 @@ class RecommendationEngine:
         self,
         history_ids: List[str],
         interaction_types: Optional[Dict[str, str]] = None,
+        structured_interactions: Optional[List[Dict[str, Any]]] = None,
         top_k: int = 8,
         candidate_pool: int = 50,
     ) -> List[RecommendationResult]:
@@ -486,19 +487,14 @@ class RecommendationEngine:
         Uses the PersonalizedEngine to:
             1. Build a recency-weighted TF-IDF user profile vector.
             2. Score all catalog products via cosine similarity.
-            3. Exclude already-viewed products.
-            4. MMR-rerank for relevance-diversity balance.
-
-        Cold-start behavior: if history_ids is empty or PersonalizedEngine is
-        unavailable, this method returns an empty list — the caller (service layer
-        or API) is responsible for routing to trending/popular fallback.
+        Generate personalized recommendations from user interaction history.
 
         Args:
-            history_ids:       Product IDs in viewing order, newest-first.
-            interaction_types: Optional dict mapping product_id → interaction type.
-                               Supported: 'view', 'view_repeat', 'wishlist', 'cart', 'purchase'.
-            top_k:             Number of recommendations to return.
-            candidate_pool:    Intermediate candidate pool size before MMR reranking.
+            history_ids:             Product IDs in viewing order, newest-first.
+            interaction_types:       Optional dict mapping product_id → interaction_type string.
+            structured_interactions: Optional list of interaction dicts/objects.
+            top_k:                   Number of recommendations to return.
+            candidate_pool:          Intermediate candidate pool size before MMR reranking.
 
         Returns:
             List of RecommendationResult with personalized reasoning and scores.
@@ -510,17 +506,18 @@ class RecommendationEngine:
             )
             return []
 
-        if not history_ids:
+        if not history_ids and not structured_interactions:
             return []
 
         logger.info(
             f"[RecommendationEngine] recommend_personalized("
-            f"history={history_ids}, k={top_k})"
+            f"history={history_ids}, interactions={len(structured_interactions or [])}, k={top_k})"
         )
 
         results = self._personalized_engine.recommend_for_session(
             history_ids=history_ids,
             interaction_types=interaction_types,
+            structured_interactions=structured_interactions,
             top_k=top_k,
             candidate_pool=candidate_pool,
         )

@@ -88,8 +88,8 @@
                 <span style="font-size: 1.8rem; font-weight: 700; color: var(--brand-secondary);" id="checkout-total">₹0</span>
             </div>
 
-            <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="alert('Payment processing is scheduled for Milestone 8.')">
-                <i class="ph ph-lock-key"></i> Proceed to Payment
+            <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="window.placeOrder()">
+                <i class="ph ph-lock-key"></i> Complete Order
             </button>
             <p style="text-align: center; font-size: 0.85rem; color: var(--text-tertiary); margin-top: 1rem;">
                 By placing your order, you agree to Amazclone's privacy notice and conditions of use.
@@ -165,9 +165,20 @@
                 
             } else {
                 itemsContainer.innerHTML = '<p style="color: var(--brand-secondary);">Your cart is empty.</p><a href="index.html" class="btn btn-outline" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a>';
-                document.getElementById('checkout-subtotal').innerText = '₹0';
-                document.getElementById('checkout-tax').innerText = 'Included';
-                document.getElementById('checkout-total').innerText = '₹0';
+                window.placeOrder = () => {
+                    const cart = JSON.parse(localStorage.getItem('amazclone_cart') || '[]');
+                    if (cart.length === 0) {
+                        alert('Your cart is empty.');
+                        return;
+                    }
+                    if (window.Interactions && window.Interactions.add) {
+                        cart.forEach(pid => window.Interactions.add(pid, 'purchase'));
+                    }
+                    localStorage.setItem('amazclone_cart', JSON.stringify([]));
+                    window.cart = [];
+                    alert('Thank you! Your order has been completed successfully.');
+                    window.location.href = 'index.html';
+                };
             }
         });
     </script>

@@ -140,9 +140,31 @@ const api = {
             endpoint = `/recommendations/personalized?history=${historyParam}&k=${k}`;
         }
         const fullUrl = `${API_BASE_URL}${endpoint}`;
-        console.info(`[Personalized API Request] Requesting URL: ${fullUrl}`);
+        console.info(`[Personalized API Request GET] Requesting URL: ${fullUrl}`);
         const res = await fetchAPI(endpoint);
-        console.info(`[Personalized API Response] HTTP Status: ${res.status || 'OK'}, mode: ${res.mode}, count: ${res.count}, data:`, res);
+        console.info(`[Personalized API Response GET] HTTP Status: ${res.status || 'OK'}, mode: ${res.mode}, count: ${res.count}, data:`, res);
+        return res;
+    },
+
+    /**
+     * POST multi-signal personalized recommendations
+     * @param {Array} interactions - List of interaction objects
+     * @param {Array} historyIds - Optional backup history IDs
+     * @param {number} k - Number of recommendations
+     */
+    async postMultiSignalPersonalizedRecommendations(interactions = [], historyIds = [], k = 8) {
+        const payload = {
+            interactions: interactions,
+            history: historyIds,
+            k: k,
+            session_id: "anonymous_session"
+        };
+        console.info(`[Personalized API Request POST] Sending multi-signal payload:`, payload);
+        const res = await fetchAPI('/recommendations/personalized', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        console.info(`[Personalized API Response POST] HTTP Status: ${res.status || 'OK'}, mode: ${res.mode}, signal: ${res.dominant_signal}, count: ${res.count}`);
         return res;
     },
 
