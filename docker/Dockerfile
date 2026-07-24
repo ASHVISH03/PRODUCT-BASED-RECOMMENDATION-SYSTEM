@@ -43,6 +43,7 @@ COPY app/ ./app/
 COPY frontend/ ./frontend/
 COPY setup.py .
 COPY pyproject.toml .
+COPY README.md .
 
 # Create required directories with correct permissions
 RUN mkdir -p \
