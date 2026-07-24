@@ -1,12 +1,13 @@
 [build-system]
 requires = ["setuptools>=75.0", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "product-recommendation-system"
 version = "1.0.0"
 description = "End-to-End MLOps Product Recommendation System"
 requires-python = ">=3.13"
+readme = "README.md"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
