@@ -10,7 +10,7 @@ from app.schemas.recommendations import PersonalizedRecommendationRequest
 from app.services.product_service import ProductService
 from app.services.recommendation_service import RecommendationService
 from app.services.search_service import SearchService
-from src.pipelines.training_pipeline import TrainingPipeline
+from app.services.training_service import run_training_pipeline
 
 router = APIRouter()
 
@@ -174,14 +174,6 @@ def get_recommendations(
     if not results:
         raise HTTPException(status_code=404, detail="Product not found or no recommendations available")
     return {"status": "success", "strategy": strategy, "count": len(results), "data": results}
-
-def run_training_pipeline():
-    try:
-        pipeline = TrainingPipeline()
-        pipeline.run()
-    except Exception as e:
-        import logging
-        logging.error(f"Background training failed: {e}")
 
 @router.post("/train", tags=["MLOps"])
 def trigger_training(background_tasks: BackgroundTasks):

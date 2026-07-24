@@ -18,6 +18,9 @@ scipy==1.14.1
 # --- Experiment Tracking ---
 mlflow==2.18.0
 
+# --- Scheduled Retraining ---
+apscheduler==3.10.4
+
 # --- Database ---
 sqlalchemy==2.0.36
 alembic==1.14.0

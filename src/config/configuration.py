@@ -139,6 +139,15 @@ class ConfigurationManager:
             self._env("DATA_RAW_FILEPATH") or d.get("raw_filepath", "data/raw/amazon.csv")
         )
 
+        # Environment variable can override use_fallback (e.g. CI without a
+        # real dataset / Kaggle credentials)
+        use_fallback_env = self._env("USE_FALLBACK")
+        use_fallback = (
+            use_fallback_env.strip().lower() in ("1", "true", "yes")
+            if use_fallback_env is not None
+            else d.get("use_fallback", False)
+        )
+
         return DataConfig(
             raw_dir=d.get("raw_dir", "data/raw"),
             processed_dir=d.get("processed_dir", "data/processed"),
@@ -148,7 +157,7 @@ class ConfigurationManager:
             raw_filename=d.get("raw_filename", "amazon.csv"),
             raw_filepath=raw_filepath,
             fallback_filepath=d.get("fallback_filepath", "data/external/sample_products.csv"),
-            use_fallback=d.get("use_fallback", False),
+            use_fallback=use_fallback,
             expected_columns=d.get("expected_columns", []),
             validation=DataValidationThresholds(
                 max_missing_ratio=v.get("max_missing_ratio", 0.30),

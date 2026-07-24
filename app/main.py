@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.router import router as api_router
+from app.services.scheduler_service import start_scheduler, shutdown_scheduler
 
 # v1.9.1 — Fixed recommend_personalized interface signature contract
 app = FastAPI(
@@ -20,6 +21,17 @@ app.add_middleware(
 
 # Include our API router
 app.include_router(api_router, prefix="/api/v1")
+
+
+@app.on_event("startup")
+def _on_startup():
+    start_scheduler()
+
+
+@app.on_event("shutdown")
+def _on_shutdown():
+    shutdown_scheduler()
+
 
 @app.get("/")
 def root():

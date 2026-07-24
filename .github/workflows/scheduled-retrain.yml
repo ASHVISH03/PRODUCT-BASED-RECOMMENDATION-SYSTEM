@@ -1,0 +1,46 @@
+name: Scheduled Retrain
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # 03:00 UTC daily
+  workflow_dispatch: {}
+
+jobs:
+  retrain:
+    name: Retrain and validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Generate fallback dataset
+        run: python scripts/generate_fallback.py
+
+      - name: Run training pipeline
+        env:
+          USE_FALLBACK: "true"
+        run: python -m src.pipelines.training_pipeline
+
+      - name: Validate freshly trained artifacts
+        env:
+          USE_FALLBACK: "true"
+        run: pytest tests/unit tests/integration -v
+
+      - name: Upload trained artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-retrain-${{ github.run_id }}
+          path: |
+            models/
+            artifacts/
+          retention-days: 14
+          if-no-files-found: warn
