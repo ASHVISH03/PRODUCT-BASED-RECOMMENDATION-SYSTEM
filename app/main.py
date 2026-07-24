@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.router import router as api_router
+from app.middleware.latency_middleware import LatencyTrackingMiddleware
 from app.services.scheduler_service import start_scheduler, shutdown_scheduler
 
 # v1.9.1 — Fixed recommend_personalized interface signature contract
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(LatencyTrackingMiddleware)
 
 # Include our API router
 app.include_router(api_router, prefix="/api/v1")

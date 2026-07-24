@@ -11,6 +11,7 @@ from app.services.product_service import ProductService
 from app.services.recommendation_service import RecommendationService
 from app.services.search_service import SearchService
 from app.services.training_service import run_training_pipeline
+from app.services import monitoring_service
 
 router = APIRouter()
 
@@ -179,3 +180,22 @@ def get_recommendations(
 def trigger_training(background_tasks: BackgroundTasks):
     background_tasks.add_task(run_training_pipeline)
     return {"status": "accepted", "message": "Training pipeline started in the background."}
+
+@router.get("/monitoring/system", tags=["Monitoring"])
+def monitoring_system():
+    return monitoring_service.get_system_metrics()
+
+@router.get("/monitoring/latency", tags=["Monitoring"])
+def monitoring_latency():
+    return monitoring_service.get_latency_metrics()
+
+@router.get("/monitoring/drift", tags=["Monitoring"])
+def monitoring_drift():
+    return monitoring_service.get_drift_report()
+
+@router.get("/monitoring/training-history", tags=["Monitoring"])
+def monitoring_training_history(
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    return {"status": "success", "data": monitoring_service.get_training_history(db, limit=limit)}
