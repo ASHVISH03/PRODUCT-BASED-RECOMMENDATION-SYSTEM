@@ -101,8 +101,8 @@ def download_dataset(username: str, key: str) -> None:
     os.environ["KAGGLE_KEY"] = key
 
     try:
-        from kaggle.api.kaggle_api_extended import KaggleApiExtended  # type: ignore
-        api = KaggleApiExtended()
+        from kaggle.api.kaggle_api_extended import KaggleApi  # type: ignore
+        api = KaggleApi()
         api.authenticate()
 
         RAW_DIR.mkdir(parents=True, exist_ok=True)
